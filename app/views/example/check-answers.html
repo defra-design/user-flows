@@ -1,0 +1,27 @@
+{% extends "layouts/example.html" %}
+
+{% set pageName = "Check your answers" %}
+{% set backLink = "/example/contact-details" %}
+
+{% block content %}
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <h1 class="govuk-heading-l">Check your answers before sending your application</h1>
+    {{ govukSummaryList({
+      rows: [
+        { key: { text: "Who owns the land" }, value: { text: "Someone else" if data.landOwner == "someone-else" else ("Tenant" if data.landOwner == "tenant" else "Me") }, actions: { items: [{ href: "/example/eligibility", text: "Change", visuallyHiddenText: "who owns the land" }] } },
+        { key: { text: "Location" }, value: { text: data.location or "SK 12345 67890" }, actions: { items: [{ href: "/example/find-land", text: "Change", visuallyHiddenText: "location" }] } },
+        { key: { text: "Planting area" }, value: { text: "Uploaded boundary file" if data.plantingArea == "uploaded" else "Drawn on the map" }, actions: { items: [{ href: "/example/map", text: "Change", visuallyHiddenText: "planting area" }] } },
+        { key: { text: "Type of trees" }, value: { text: (data.treeTypes | join(", ")) if data.treeTypes else "Broadleaf" }, actions: { items: [{ href: "/example/tree-types", text: "Change", visuallyHiddenText: "type of trees" }] } },
+        { key: { text: "Name" }, value: { text: data.fullName or "Sam Smith" }, actions: { items: [{ href: "/example/contact-details", text: "Change", visuallyHiddenText: "name" }] } },
+        { key: { text: "Phone number" }, value: { text: data.phone or "07700 900 982" }, actions: { items: [{ href: "/example/contact-details", text: "Change", visuallyHiddenText: "phone number" }] } }
+      ]
+    }) }}
+    <h2 class="govuk-heading-m">Now send your application</h2>
+    <p class="govuk-body">By sending this application you are confirming that the details you are providing are correct.</p>
+    <form action="/example/confirmation" method="post" novalidate>
+      {{ govukButton({ text: "Accept and send" }) }}
+    </form>
+  </div>
+</div>
+{% endblock %}

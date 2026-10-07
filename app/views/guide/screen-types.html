@@ -1,0 +1,38 @@
+{% extends "layouts/user-flow-guide.html" %}
+{% set pageName = "Screen types" %}
+{% set pageUrl = "/guide/screen-types" %}
+
+{% block guideContent %}
+<h1 class="govuk-heading-xl">Screen types</h1>
+
+<p class="govuk-body-l">Each step uses one of these wireframes. Designers choose the one that looks most like the real page.</p>
+
+<p class="govuk-body">The code under each screen is the <code>type</code> that designers use to show it. If you are just reading a user flow, you can ignore it.</p>
+
+<ul class="ufg-gallery">
+  {% for t in ufScreenTypes %}
+  <li>
+    <span class="uf-pill">{{ t.name }}</span>
+    {{ ufDevices(t.type) }}
+    <code>"type": "{{ t.type }}"</code>
+    <p>{{ t.use }}</p>
+  </li>
+  {% endfor %}
+</ul>
+
+<p class="govuk-body">If a step uses a type that is not in this list, a plain page is shown instead.</p>
+
+<h2 class="govuk-heading-l">Adding a screen type</h2>
+
+<p class="govuk-body">If none of these look like your page, use the closest one for now. A designer can add a new type to the shared file <code>app/views/includes/user-flow/wireframes.njk</code>. It then appears in every user flow in the prototype and on this page.</p>
+
+<p class="govuk-body">To add one, ask your AI coding assistant to use the <code>edit-user-flow</code> skill (see <a class="govuk-link" href="/guide/getting-started#ai-skills">using AI to edit a user flow</a>), or follow the notes at the top of the shared file:</p>
+<ol class="govuk-list govuk-list--number">
+  <li>Draw the screen in the <code>ufScreen</code> macro, using the existing lines, headings and buttons.</li>
+  <li>Add any new styles to <code>ufStyles</code>, for desktop and mobile.</li>
+  <li>Add the type to the <code>ufScreenTypes</code> list, with a name and what it’s for.</li>
+  <li>Check it fits: desktop screens are 104px tall and mobile screens are 148px. Anything below that is cut off.</li>
+</ol>
+
+<p class="govuk-body">If your new screen type would be useful to other teams, <a class="govuk-link" href="https://github.com/defra-design/user-flows">share it in the user flows repository</a> so everyone can use it.</p>
+{% endblock %}

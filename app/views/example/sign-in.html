@@ -1,0 +1,18 @@
+{% extends "layouts/example.html" %}
+
+{% set pageName = "Sign in" %}
+{% set backLink = "/example/eligibility" %}
+
+{% block content %}
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <h1 class="govuk-heading-l">Sign in</h1>
+    <form action="/example/task-list" method="post" novalidate>
+      {{ govukInput({ label: { text: "Email address" }, name: "email", type: "email", autocomplete: "email", spellcheck: false, value: data.email }) }}
+      {{ govukInput({ label: { text: "Password" }, name: "examplePassword", type: "password", classes: "govuk-!-width-one-half" }) }}
+      {{ govukButton({ text: "Sign in" }) }}
+    </form>
+    <p class="govuk-body"><a class="govuk-link" href="#">Create an account</a></p>
+  </div>
+</div>
+{% endblock %}

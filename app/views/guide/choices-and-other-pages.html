@@ -1,0 +1,66 @@
+{% extends "layouts/user-flow-guide.html" %}
+{% set pageName = "Choices and other pages" %}
+{% set pageUrl = "/guide/choices-and-other-pages" %}
+
+{% block guideContent %}
+<h1 class="govuk-heading-xl">Choices and other pages</h1>
+
+<p class="govuk-body-l">Not every journey is a straight line. Some steps give the user a choice, and some pages can be visited from more than one place.</p>
+
+<h2 class="govuk-heading-l">When the user chooses one of several screens</h2>
+
+<p class="govuk-body">Sometimes the user can pick one of several screens at the same point in a journey. These screens are shown side by side in a dashed box.</p>
+
+<div class="ufg-example">
+  <p class="ufg-example__label">Example <span>Adding the planting area</span></p>
+  <div class="ufg-example__preview uf--desktop">
+    <section class="uf-journey">
+      <ol class="uf-steps">
+        {{ ufStep({ "type": "map", "title": "Map of your land", "live": "/map", "note": "User chooses how to add the planting area" }, 6) }}
+        {{ ufChoiceStep({ "choice": "Add the planting area", "options": [
+          { "type": "draw-polygon", "title": "Draw the area", "live": "/map" },
+          { "type": "draw-square", "title": "Add a square", "live": "/map" },
+          { "type": "upload", "title": "Upload a boundary file", "live": "/upload" }
+        ] }, 7) }}
+        {{ ufStep({ "type": "checkbox", "title": "Type of trees", "live": "/tree-types" }, 8) }}
+      </ol>
+    </section>
+  </div>
+</div>
+
+<p class="govuk-body">In this example:</p>
+<ol class="govuk-list govuk-list--number">
+  <li>At step 6, the user is on the map.</li>
+  <li>At step 7, they choose <strong>one</strong> way to add the planting area. The first option says “choose one” and the others say “or”.</li>
+  <li>Whichever they chose, they all go on to step 8.</li>
+</ol>
+
+<p class="govuk-body">The options in the box all count as one step, so the step numbers carry on as normal afterwards.</p>
+
+<h2 class="govuk-heading-l">Pages outside the main flow</h2>
+
+<p class="govuk-body">Some pages are not part of the journey in a set order. The user might open them from several places, or might not need them at all. For example:</p>
+<ul class="govuk-list govuk-list--bullet">
+  <li>help pages</li>
+  <li>guidance, such as the rules for a grant</li>
+  <li>optional pages, such as reading the grant rules from the grant estimate page</li>
+</ul>
+
+<p class="govuk-body">These are shown at the bottom of the user flow, in a dashed box called <strong>Pages outside the main flow</strong>. They have no arrows or step numbers. Instead, each one lists the pages that link to it.</p>
+
+<div class="ufg-example">
+  <p class="ufg-example__label">Example <span>Pages outside the main flow</span></p>
+  <div class="ufg-example__preview">
+    <section class="uf-journey uf-journey--other">
+      <ul class="uf-steps">
+        {{ ufOtherPage({ "type": "content", "title": "Grant rules", "live": "/grant-rules", "prototype": "/example/grant-rules", "note": "Optional. What the grant pays for and how much", "from": ["Start page", "Your grant estimate"] }) }}
+        {{ ufOtherPage({ "type": "content", "title": "Help using the map", "live": "/map-help", "prototype": "/example/map-help", "from": ["Map of your land"] }) }}
+      </ul>
+    </section>
+  </div>
+</div>
+
+<div class="govuk-inset-text">
+  If a page in the main journey links to an optional page, its note usually says so. For example, the grant estimate page says the user can optionally read the grant rules.
+</div>
+{% endblock %}

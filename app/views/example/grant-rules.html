@@ -1,0 +1,23 @@
+{% extends "layouts/example.html" %}
+
+{% set pageName = "Grant rules" %}
+
+{% block content %}
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <h1 class="govuk-heading-l">Woodland creation grant rules</h1>
+    <p class="govuk-body">This is example guidance for a made-up grant.</p>
+    <h2 class="govuk-heading-m">Who can apply</h2>
+    <p class="govuk-body">You can apply if you own the land or manage it as a tenant.</p>
+    <ul class="govuk-list govuk-list--bullet">
+      <li>the area must be at least 1 hectare</li>
+      <li>you must keep the trees for at least 15 years</li>
+    </ul>
+    <h2 class="govuk-heading-m">What the grant pays for</h2>
+    <p class="govuk-body">The grant pays for trees, tree protection and fencing.</p>
+    <h2 class="govuk-heading-m">How much you can get</h2>
+    <p class="govuk-body">Up to £8,500 per hectare for planting, and £350 per hectare each year for maintenance.</p>
+    <p class="govuk-body"><a class="govuk-link" href="/example/start">Apply for a woodland creation grant</a></p>
+  </div>
+</div>
+{% endblock %}

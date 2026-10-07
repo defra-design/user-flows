@@ -1,0 +1,79 @@
+{% extends "layouts/user-flow-guide.html" %}
+{% set pageName = "If the page does not load" %}
+{% set pageUrl = "/guide/troubleshooting" %}
+
+{% block guideContent %}
+<h1 class="govuk-heading-xl">If the page does not load</h1>
+
+<p class="govuk-body-l">The user flow is built from the lists at the top of the file, so a small typing mistake can stop the whole page loading.</p>
+
+<p class="govuk-body">The error in the terminal where the prototype is running usually gives the line number of the problem. Look at that line and the one before it.</p>
+
+<h2 class="govuk-heading-l">Common mistakes</h2>
+
+<h3 class="govuk-heading-m">A missing comma between steps</h3>
+<div class="ufg-dodont">
+  <div class="ufg-dont">
+    <h4 class="govuk-heading-s">Wrong</h4>
+    <pre class="ufg-code">{ "type": "start", "title": "Start page" }
+{ "type": "radio", "title": "Who owns the land" }</pre>
+  </div>
+  <div>
+    <h4 class="govuk-heading-s">Right</h4>
+    <pre class="ufg-code">{ "type": "start", "title": "Start page" }<mark>,</mark>
+{ "type": "radio", "title": "Who owns the land" }</pre>
+  </div>
+</div>
+
+<h3 class="govuk-heading-m">A comma after the last step</h3>
+<div class="ufg-dodont">
+  <div class="ufg-dont">
+    <h4 class="govuk-heading-s">Wrong</h4>
+    <pre class="ufg-code">  { "type": "confirmation", "title": "Confirmation page" },
+]</pre>
+  </div>
+  <div>
+    <h4 class="govuk-heading-s">Right</h4>
+    <pre class="ufg-code">  { "type": "confirmation", "title": "Confirmation page" }
+]</pre>
+  </div>
+</div>
+
+<h3 class="govuk-heading-m">A missing quote mark</h3>
+<div class="ufg-dodont">
+  <div class="ufg-dont">
+    <h4 class="govuk-heading-s">Wrong</h4>
+    <pre class="ufg-code">{ "type": "map", "title": "Full screen map }</pre>
+  </div>
+  <div>
+    <h4 class="govuk-heading-s">Right</h4>
+    <pre class="ufg-code">{ "type": "map", "title": "Full screen map<mark>"</mark> }</pre>
+  </div>
+</div>
+
+<h3 class="govuk-heading-m">A missing bracket in a choice step</h3>
+<div class="ufg-dodont">
+  <div class="ufg-dont">
+    <h4 class="govuk-heading-s">Wrong</h4>
+    <pre class="ufg-code">{ "choice": "Add a boundary", "options": [
+  { "type": "draw-polygon", "title": "Draw a polygon" },
+  { "type": "upload", "title": "Upload a boundary" }
+},</pre>
+  </div>
+  <div>
+    <h4 class="govuk-heading-s">Right</h4>
+    <pre class="ufg-code">{ "choice": "Add a boundary", "options": [
+  { "type": "draw-polygon", "title": "Draw a polygon" },
+  { "type": "upload", "title": "Upload a boundary" }
+<mark>]</mark> },</pre>
+  </div>
+</div>
+
+<h2 class="govuk-heading-l">If a screen looks wrong</h2>
+
+<p class="govuk-body">If a step shows a plain page instead of the wireframe you expected, check the <code>type</code> is spelled exactly as it is in <a class="govuk-link" href="/guide/screen-types">screen types</a>, in lower case.</p>
+
+<h2 class="govuk-heading-l">If a link goes to the wrong page</h2>
+
+<p class="govuk-body">Check the <code>prototype</code> value matches a file name in the same folder as the user flow, without <code>.html</code>. See <a class="govuk-link" href="/guide/links">linking to prototype pages</a>.</p>
+{% endblock %}

@@ -1,0 +1,95 @@
+{% extends "layouts/user-flow-guide.html" %}
+{% set pageName = "Choice steps" %}
+{% set pageUrl = "/guide/choice-steps" %}
+
+{% block guideContent %}
+<h1 class="govuk-heading-xl">Choice steps</h1>
+
+<p class="govuk-body-l">Use a choice step when the user picks one of several screens at the same point in a journey, then carries on the same way whichever they picked.</p>
+
+<div class="ufg-example">
+  <p class="ufg-example__label">Example <span>Three ways to add the planting area</span></p>
+  <div class="ufg-example__preview">
+    <section class="uf-journey">
+      <ol class="uf-steps">
+        {{ ufChoiceStep({ "choice": "Add the planting area", "options": [
+          { "type": "draw-polygon", "title": "Draw the area", "live": "/map", "prototype": "/example/draw", "note": "Drawn on the map" },
+          { "type": "draw-square", "title": "Add a square", "live": "/map", "prototype": "/example/draw", "note": "Drawn on the map" },
+          { "type": "upload", "title": "Upload a boundary file", "live": "/upload", "prototype": "/example/upload" }
+        ] }, 7) }}
+      </ol>
+    </section>
+  </div>
+  <pre class="ufg-example__code">{ "choice": "Add the planting area", "options": [
+  { "type": "draw-polygon", "title": "Draw the area",          "live": "/map",    "prototype": "draw", "note": "Drawn on the map" },
+  { "type": "draw-square",  "title": "Add a square",           "live": "/map",    "prototype": "draw", "note": "Drawn on the map" },
+  { "type": "upload",       "title": "Upload a boundary file", "live": "/upload", "prototype": "upload" }
+] },</pre>
+</div>
+
+<h2 class="govuk-heading-l">When to use a choice step</h2>
+
+<div class="ufg-dodont">
+  <div>
+    <h3 class="govuk-heading-s">Use a choice step when</h3>
+    <ul class="govuk-list govuk-list--bullet">
+      <li>the user must go through one of the options to carry on</li>
+      <li>all the options lead to the same next step</li>
+      <li>there are 2 to 4 options</li>
+    </ul>
+  </div>
+  <div class="ufg-dont">
+    <h3 class="govuk-heading-s">Do not use a choice step when</h3>
+    <ul class="govuk-list govuk-list--bullet">
+      <li>the page is optional – add it to <a class="govuk-link" href="/guide/other-pages">pages outside the main flow</a></li>
+      <li>the options lead to different journeys – add a <a class="govuk-link" href="/guide/journeys">journey</a></li>
+      <li>an option is more than one screen long</li>
+    </ul>
+  </div>
+</div>
+
+<h2 class="govuk-heading-l">How to write a choice step</h2>
+
+<p class="govuk-body">A choice step goes in the <code>steps</code> list like any other step. Instead of a <code>type</code>, it has:</p>
+
+<table class="govuk-table">
+  <caption class="govuk-table__caption govuk-table__caption--s govuk-visually-hidden">Fields in a choice step</caption>
+  <thead class="govuk-table__head">
+    <tr class="govuk-table__row">
+      <th scope="col" class="govuk-table__header">Field</th>
+      <th scope="col" class="govuk-table__header">What it does</th>
+      <th scope="col" class="govuk-table__header">Needed?</th>
+    </tr>
+  </thead>
+  <tbody class="govuk-table__body">
+    <tr class="govuk-table__row">
+      <td class="govuk-table__cell"><code>choice</code></td>
+      <td class="govuk-table__cell">A short name for the choice. It is not shown on the page, but screen readers read it out.</td>
+      <td class="govuk-table__cell">Yes</td>
+    </tr>
+    <tr class="govuk-table__row">
+      <td class="govuk-table__cell"><code>options</code></td>
+      <td class="govuk-table__cell">A list of the screens the user can choose between. Each one is written like a normal <a class="govuk-link" href="/guide/steps">step</a>.</td>
+      <td class="govuk-table__cell">Yes</td>
+    </tr>
+  </tbody>
+</table>
+
+<p class="govuk-body">The options count as one step, so the steps after it are numbered as normal. The first option is labelled “Step 7 – choose one” and the others “or” – this is done for you.</p>
+
+<h3 class="govuk-heading-m">Brackets and commas</h3>
+
+<p class="govuk-body">A choice step has more brackets than a normal step. The highlighted ones are easy to miss:</p>
+
+<pre class="ufg-code">{ "choice": "Add the planting area", "options": <mark>[</mark>
+  { "type": "draw-polygon", "title": "Draw the area" }<mark>,</mark>
+  { "type": "draw-square",  "title": "Add a square" }<mark>,</mark>
+  { "type": "upload",       "title": "Upload a boundary file" }
+<mark>]</mark> }<mark>,</mark></pre>
+
+<ul class="govuk-list govuk-list--bullet">
+  <li>put a comma between options, but not after the last one</li>
+  <li>close the options with <code>]</code>, then the step with <code>}</code></li>
+  <li>put a comma after the whole step if another step follows it</li>
+</ul>
+{% endblock %}

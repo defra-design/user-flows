@@ -1,0 +1,17 @@
+{% extends "layouts/example.html" %}
+
+{% set pageName = "Contact details" %}
+{% set backLink = "/example/estimate" %}
+
+{% block content %}
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <h1 class="govuk-heading-l">Contact details</h1>
+    <form action="/example/check-answers" method="post" novalidate>
+      {{ govukInput({ label: { text: "Full name" }, name: "fullName", autocomplete: "name", value: data.fullName }) }}
+      {{ govukInput({ label: { text: "Phone number" }, name: "phone", type: "tel", autocomplete: "tel", classes: "govuk-input--width-20", value: data.phone }) }}
+      {{ govukButton({ text: "Continue" }) }}
+    </form>
+  </div>
+</div>
+{% endblock %}

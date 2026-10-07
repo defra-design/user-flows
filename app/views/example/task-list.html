@@ -1,0 +1,21 @@
+{% extends "layouts/example.html" %}
+
+{% set pageName = "Your application" %}
+
+{% block content %}
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <h1 class="govuk-heading-l">Your application</h1>
+    {{ govukTaskList({
+      idPrefix: "application",
+      items: [
+        { title: { text: "Find your land" }, href: "/example/find-land", status: { text: "Completed" } if data.location else { tag: { text: "Incomplete", classes: "govuk-tag--blue" } } },
+        { title: { text: "Add the planting area" }, href: "/example/map", status: { text: "Completed" } if data.plantingArea else { tag: { text: "Incomplete", classes: "govuk-tag--blue" } } },
+        { title: { text: "Type of trees" }, href: "/example/tree-types", status: { text: "Completed" } if data.treeTypes else { tag: { text: "Incomplete", classes: "govuk-tag--blue" } } },
+        { title: { text: "Contact details" }, href: "/example/contact-details", status: { text: "Completed" } if data.fullName else { tag: { text: "Incomplete", classes: "govuk-tag--blue" } } },
+        { title: { text: "Check and send your application" }, href: "/example/check-answers", status: { text: "Cannot start yet", classes: "govuk-task-list__status--cannot-start-yet" } }
+      ]
+    }) }}
+  </div>
+</div>
+{% endblock %}

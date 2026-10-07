@@ -1,0 +1,20 @@
+{% extends "layouts/example.html" %}
+
+{% set pageName = "Apply for a woodland creation grant" %}
+
+{% block content %}
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <h1 class="govuk-heading-xl">Apply for a woodland creation grant</h1>
+    <p class="govuk-body">Use this service to apply for money to plant new woodland on land you own or manage.</p>
+    <p class="govuk-body">You’ll need:</p>
+    <ul class="govuk-list govuk-list--bullet">
+      <li>the address or grid reference of the land</li>
+      <li>a map or boundary file of the area you want to plant, if you have one</li>
+    </ul>
+    <p class="govuk-body">It takes around 20 minutes.</p>
+    {{ govukButton({ text: "Start now", href: "/example/eligibility", isStartButton: true }) }}
+    <p class="govuk-body">Read the <a class="govuk-link" href="/example/grant-rules">grant rules</a> before you apply.</p>
+  </div>
+</div>
+{% endblock %}

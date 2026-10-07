@@ -1,0 +1,64 @@
+{% extends "layouts/user-flow-guide.html" %}
+{% set pageName = "User flows" %}
+{% set pageUrl = "/guide" %}
+
+{% block guideContent %}
+<h1 class="govuk-heading-xl">User flows</h1>
+
+<p class="govuk-body-l">A user flow shows every screen in a journey through a service as a small wireframe, joined by arrows, with the live and prototype address of each page.</p>
+
+<div class="ufg-example">
+  <p class="ufg-example__label">Example <span>Desktop screens only</span></p>
+  <div class="ufg-example__preview uf--desktop">
+    <section class="uf-journey">
+      <ol class="uf-steps">
+        {{ ufStep({ "type": "text", "title": "Find your land", "live": "/find-land", "prototype": "/example/find-land" }, 1) }}
+        {{ ufStep({ "type": "map", "title": "Map of your land", "live": "/map", "prototype": "/example/map" }, 2) }}
+        {{ ufStep({ "type": "checkbox", "title": "Type of trees", "live": "/tree-types", "prototype": "/example/tree-types" }, 3) }}
+      </ol>
+    </section>
+  </div>
+</div>
+
+<p class="govuk-body">Use a user flow to:</p>
+<ul class="govuk-list govuk-list--bullet">
+  <li>see a whole journey on one page, on desktop and mobile</li>
+  <li>open any page in the prototype</li>
+  <li>find the address of a page on the live service</li>
+  <li>talk through a journey in research, design crits or show and tells</li>
+</ul>
+
+<p class="govuk-body">User flows are built into the GOV.UK Prototype Kit, so they link straight to your prototype’s pages. They’re shared across Defra so teams draw journeys the same way.</p>
+
+<p class="govuk-body govuk-!-margin-bottom-8">
+  <a href="/example/user-flow" role="button" draggable="false" class="govuk-button govuk-!-margin-bottom-0" data-module="govuk-button">View an example user flow</a>
+</p>
+
+<h2 class="govuk-heading-l">Choose a guide</h2>
+
+<div class="ufg-cards">
+  <div class="ufg-card">
+    <h2 class="govuk-heading-m">Reading a user flow</h2>
+    <p class="govuk-body">For everyone. You do not need to know any code.</p>
+    <ul class="govuk-list">
+      <li><a class="govuk-link" href="/guide/reading">How to read a user flow</a></li>
+      <li><a class="govuk-link" href="/guide/choices-and-other-pages">Choices and other pages</a></li>
+      <li><a class="govuk-link" href="/guide/screen-types">Screen types</a></li>
+    </ul>
+  </div>
+  <div class="ufg-card ufg-card--designers">
+    <h2 class="govuk-heading-m">Creating and managing</h2>
+    <p class="govuk-body">For designers who add or change steps in a user flow.</p>
+    <ul class="govuk-list">
+      <li><a class="govuk-link" href="/guide/add-to-your-prototype">Add a user flow to your prototype</a></li>
+      <li><a class="govuk-link" href="/guide/getting-started">Getting started</a></li>
+      <li><a class="govuk-link" href="/guide/steps">Steps</a></li>
+      <li><a class="govuk-link" href="/guide/choice-steps">Choice steps</a></li>
+      <li><a class="govuk-link" href="/guide/other-pages">Pages outside the main flow</a></li>
+      <li><a class="govuk-link" href="/guide/journeys">Journeys</a></li>
+      <li><a class="govuk-link" href="/guide/links">Linking to prototype pages</a></li>
+      <li><a class="govuk-link" href="/guide/troubleshooting">If the page does not load</a></li>
+    </ul>
+  </div>
+</div>
+{% endblock %}

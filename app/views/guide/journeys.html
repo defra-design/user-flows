@@ -1,0 +1,56 @@
+{% extends "layouts/user-flow-guide.html" %}
+{% set pageName = "Journeys" %}
+{% set pageUrl = "/guide/journeys" %}
+
+{% block guideContent %}
+<h1 class="govuk-heading-xl">Journeys</h1>
+
+<p class="govuk-body-l">A journey is one grey box of steps joined by arrows. Most user flows only need the main journey.</p>
+
+<h2 class="govuk-heading-l">When to add a journey</h2>
+
+<div class="ufg-dodont">
+  <div>
+    <h3 class="govuk-heading-s">Add a journey when</h3>
+    <ul class="govuk-list govuk-list--bullet">
+      <li>the route is different from start to finish, like a returning user who signs in</li>
+      <li>the route ends somewhere else, like a user who is not eligible – see the <a class="govuk-link" href="/example/user-flow">example user flow</a></li>
+    </ul>
+  </div>
+  <div class="ufg-dont">
+    <h3 class="govuk-heading-s">Do not add a journey when</h3>
+    <ul class="govuk-list govuk-list--bullet">
+      <li>the route is only different for one step, then joins the main journey again – use a <a class="govuk-link" href="/guide/choice-steps">choice step</a></li>
+      <li>the user can visit an extra page and come back – add it to <a class="govuk-link" href="/guide/other-pages">pages outside the main flow</a></li>
+    </ul>
+  </div>
+</div>
+
+<p class="govuk-body">This stops the same steps being repeated in several journeys, which makes the user flow longer and harder to keep up to date.</p>
+
+<h2 class="govuk-heading-l">Adding a journey</h2>
+
+<p class="govuk-body">Copy an existing journey block in the <code>journeys</code> list, give it a new <code>heading</code> and change the steps.</p>
+
+<div class="ufg-example">
+  <p class="ufg-example__label">Example <span>A made-up journey for a returning user</span></p>
+  <div class="ufg-example__preview">
+    <section class="uf-journey">
+      <h3 class="govuk-heading-m">Returning user</h3>
+      <ol class="uf-steps">
+        {{ ufStep({ "type": "signin", "title": "Sign in", "live": "/sign-in" }, 1) }}
+        {{ ufStep({ "type": "dashboard", "title": "Your requests", "live": "/requests" }, 2) }}
+      </ol>
+    </section>
+  </div>
+  <pre class="ufg-example__code">{
+  "heading": "Returning user",
+  "steps": [
+    { "type": "signin",    "title": "Sign in",       "live": "/sign-in" },
+    { "type": "dashboard", "title": "Your requests", "live": "/requests" }
+  ]
+},</pre>
+</div>
+
+<p class="govuk-body">Journeys are shown in the order they are in the list. Put a comma between journey blocks, but not after the last one.</p>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends "layouts/example.html" %}
+
+{% set pageName = "Find your land" %}
+{% set backLink = "/example/task-list" %}
+
+{% block content %}
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <form action="/example/map" method="post" novalidate>
+      {{ govukInput({
+        label: { text: "Where is the land?", isPageHeading: true, classes: "govuk-label--l" },
+        hint: { text: "Enter a postcode or grid reference, like SK 12345 67890" },
+        name: "location",
+        classes: "govuk-!-width-two-thirds",
+        value: data.location
+      }) }}
+      {{ govukButton({ text: "Continue" }) }}
+    </form>
+  </div>
+</div>
+{% endblock %}

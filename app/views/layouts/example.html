@@ -1,0 +1,18 @@
+{% extends "layouts/main.html" %}
+
+{#
+  Layout for the example service in app/views/example/.
+  The example service is made up. It exists so the example user flow
+  (/example/user-flow) has real prototype pages to link to.
+#}
+
+{% set serviceName = "Apply for a woodland creation grant" %}
+{% set serviceUrl = "/example/start" %}
+
+{% block beforeContent %}
+  {{ govukPhaseBanner({
+    tag: { text: "Example" },
+    html: 'This is a made-up service. <a class="govuk-link" href="/example/user-flow">View its user flow</a>.'
+  }) }}
+  {% if backLink %}<a href="{{ backLink }}" class="govuk-back-link">Back</a>{% endif %}
+{% endblock %}

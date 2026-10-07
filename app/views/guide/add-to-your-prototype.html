@@ -1,0 +1,71 @@
+{% extends "layouts/user-flow-guide.html" %}
+{% set pageName = "Add a user flow to your prototype" %}
+{% set pageUrl = "/guide/add-to-your-prototype" %}
+
+{% block guideContent %}
+<h1 class="govuk-heading-xl">Add a user flow to your prototype</h1>
+
+<p class="govuk-body-l">You can add a user flow to any prototype made with the GOV.UK Prototype Kit. You copy 2 files, then change one of them to describe your service.</p>
+
+<div class="govuk-inset-text">
+  If you use an AI coding assistant, the <code>create-user-flow</code> skill does these steps for you. See <a class="govuk-link" href="/guide/getting-started#ai-skills">using AI to edit a user flow</a>.
+</div>
+
+<h2 class="govuk-heading-l">1. Copy the files</h2>
+
+<p class="govuk-body">Get the files from the <a class="govuk-link" href="https://github.com/defra-design/user-flows">user flows repository</a> and copy them into your prototype, in the same places:</p>
+
+<table class="govuk-table">
+  <thead class="govuk-table__head">
+    <tr class="govuk-table__row">
+      <th scope="col" class="govuk-table__header">File</th>
+      <th scope="col" class="govuk-table__header">What it does</th>
+    </tr>
+  </thead>
+  <tbody class="govuk-table__body">
+    <tr class="govuk-table__row">
+      <td class="govuk-table__cell"><code>app/views/includes/user-flow/wireframes.njk</code></td>
+      <td class="govuk-table__cell">Draws the wireframes, steps and styles. You do not need to change it.</td>
+    </tr>
+    <tr class="govuk-table__row">
+      <td class="govuk-table__cell"><code>app/views/example/user-flow.html</code></td>
+      <td class="govuk-table__cell">The user flow page. Put it in the folder with your prototype’s pages, for example <code>app/views/user-flow.html</code> or <code>app/views/v2/user-flow.html</code>.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p class="govuk-body">The Prototype Kit shows the page at the same address as the file, without <code>.html</code>, for example <code>/v2/user-flow</code>. You do not need to add a route.</p>
+
+<h2 class="govuk-heading-l">2. Describe your service</h2>
+
+<p class="govuk-body">In your copy of <code>user-flow.html</code>:</p>
+<ol class="govuk-list govuk-list--number">
+  <li>Change <code>serviceName</code> to the name of your service.</li>
+  <li>Replace the example <a class="govuk-link" href="/guide/journeys">journeys</a> with your own <a class="govuk-link" href="/guide/steps">steps</a>.</li>
+  <li>Replace the example <a class="govuk-link" href="/guide/other-pages">pages outside the main flow</a>, or delete them all to leave an empty list: <code>{% raw %}{% set otherPages = [] %}{% endraw %}</code>.</li>
+  <li>Point each <code>prototype</code> value at a page in your prototype – see <a class="govuk-link" href="/guide/links">linking to prototype pages</a>.</li>
+</ol>
+
+<p class="govuk-body">Open the page in your browser to check it loads. If it does not, see <a class="govuk-link" href="/guide/troubleshooting">if the page does not load</a>.</p>
+
+<h2 class="govuk-heading-l">3. Link to it</h2>
+
+<p class="govuk-body">Add a link to the user flow from your prototype’s home page, so your team and stakeholders can find it.</p>
+
+<h2 class="govuk-heading-l">Prototypes with versions</h2>
+
+<p class="govuk-body">If your prototype keeps each version in its own folder, give each version its own user flow. When you make a new version:</p>
+
+<ol class="govuk-list govuk-list--number">
+  <li>Copy <code>user-flow.html</code> from the previous version’s folder into the new version’s folder.</li>
+  <li>Update the steps for anything that has changed in this version.</li>
+  <li>Check that the <code>prototype</code> links point to pages that exist in the new version.</li>
+  <li>Link to the new user flow from your home page.</li>
+</ol>
+
+<p class="govuk-body">You do not need to copy <code>wireframes.njk</code> again. Every user flow in the prototype uses the same one.</p>
+
+<h2 class="govuk-heading-l">The guide</h2>
+
+<p class="govuk-body">You do not need to copy this guide into your prototype. Link to it instead, so everyone uses the same, up-to-date version.</p>
+{% endblock %}

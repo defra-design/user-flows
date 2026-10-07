@@ -1,0 +1,72 @@
+{% extends "layouts/user-flow-guide.html" %}
+{% set pageName = "Getting started" %}
+{% set pageUrl = "/guide/getting-started" %}
+
+{% block guideContent %}
+<h1 class="govuk-heading-xl">Getting started</h1>
+
+<p class="govuk-body-l">A user flow is one file in your prototype. You change it by editing two lists at the top of the file.</p>
+
+<p class="govuk-body">If your prototype does not have a user flow yet, first <a class="govuk-link" href="/guide/add-to-your-prototype">add a user flow to your prototype</a>.</p>
+
+<h2 class="govuk-heading-l">Where the user flow lives</h2>
+
+<p class="govuk-body">In this repository, the example user flow is <code>app/views/example/user-flow.html</code>. You can view it at <a class="govuk-link" href="/example/user-flow">/example/user-flow</a>.</p>
+
+<p class="govuk-body">In your prototype, it is wherever you put it, such as <code>app/views/user-flow.html</code>. If your prototype has versions, each version has its own, like <code>app/views/v2/user-flow.html</code>.</p>
+
+<h2 class="govuk-heading-l">What to change in the file</h2>
+
+<p class="govuk-body">Only edit the two lists near the top. Everything else draws the page.</p>
+
+<div class="ufg-file">
+  <div class="ufg-file__name">user-flow.html</div>
+  <div class="ufg-file__part ufg-file__part--leave">
+    <div><span class="ufg-tag ufg-tag--leave">Leave</span><br><code>{% raw %}{# … #}{% endraw %}</code></div>
+    <p>Notes on how to fill in the lists</p>
+  </div>
+  <div class="ufg-file__part ufg-file__part--edit">
+    <div><span class="ufg-tag ufg-tag--edit">Edit</span><br><code>journeys</code></div>
+    <p>The journeys and their steps, including <a class="govuk-link" href="/guide/choice-steps">choice steps</a>. Each journey becomes a grey box with arrows.</p>
+  </div>
+  <div class="ufg-file__part ufg-file__part--edit">
+    <div><span class="ufg-tag ufg-tag--edit">Edit</span><br><code>otherPages</code></div>
+    <p>Pages outside the main flow. They go in the dashed box at the bottom.</p>
+  </div>
+  <div class="ufg-file__part ufg-file__part--leave">
+    <div><span class="ufg-tag ufg-tag--leave">Leave</span><br><code>{% raw %}{% block content %}{% endraw %}</code></div>
+    <p>The page layout, view buttons and print button</p>
+  </div>
+</div>
+
+<div class="ufg-file">
+  <div class="ufg-file__name">app/views/includes/user-flow/wireframes.njk</div>
+  <div class="ufg-file__part ufg-file__part--leave">
+    <div><span class="ufg-tag ufg-tag--leave">Leave</span><br><code>Shared</code></div>
+    <p>Draws the wireframes, steps and styles for every user flow in the prototype. Only change it to <a class="govuk-link" href="/guide/screen-types">add a screen type</a>.</p>
+  </div>
+</div>
+
+<h2 class="govuk-heading-l">How the lists are written</h2>
+
+<p class="govuk-body">The lists use a format like JSON. You do not need to know it well, but you need to keep to a few rules or the page will not load:</p>
+
+<ul class="govuk-list govuk-list--bullet">
+  <li>put every name and value in double quotes, like <code>"title": "Results page"</code></li>
+  <li>put a comma after every item in a list except the last one</li>
+  <li>keep the brackets in pairs – every <code>{</code> needs a <code>}</code> and every <code>[</code> needs a <code>]</code></li>
+</ul>
+
+<p class="govuk-body">The easiest way to add something is to copy a line that already works and change it.</p>
+
+<p class="govuk-body">If the page stops loading after a change, see <a class="govuk-link" href="/guide/troubleshooting">if the page does not load</a>.</p>
+<h2 class="govuk-heading-l" id="ai-skills">Using AI to edit a user flow</h2>
+
+<p class="govuk-body">The repository includes 2 skills for AI coding assistants, such as GitHub Copilot or Claude Code. They are in the <code>.github/skills</code> folder:</p>
+<ul class="govuk-list govuk-list--bullet">
+  <li><code>create-user-flow</code> – add a user flow to a prototype, or to a new version of one</li>
+  <li><code>edit-user-flow</code> – add, remove or change steps, journeys, pages and screen types</li>
+</ul>
+
+<p class="govuk-body">Copy the <code>.github/skills</code> folders into your prototype, then ask your assistant something like “add a contact details step after the results page in the user flow”. Check the user flow in your browser afterwards.</p>
+{% endblock %}

@@ -1,0 +1,118 @@
+{% extends "layouts/user-flow-guide.html" %}
+{% set pageName = "How to read a user flow" %}
+{% set pageUrl = "/guide/reading" %}
+
+{% block guideContent %}
+<h1 class="govuk-heading-xl">How to read a user flow</h1>
+
+<p class="govuk-body-l">Each screen in a user flow is shown as a step. Steps are joined by arrows to show the order the user sees them in.</p>
+
+<h2 class="govuk-heading-l">Parts of a step</h2>
+
+<div class="ufg-anatomy">
+  <div class="ufg-anatomy__figure">
+    <div class="ufg-annotated">
+      <ol class="uf-steps">
+        {{ ufStep({ "type": "radio", "title": "Who owns the land", "live": "/eligibility", "prototype": "/example/eligibility", "note": "Asks who owns or manages the land" }, 2) }}
+      </ol>
+      <span class="ufg-marker" data-target=".uf-number" aria-hidden="true">1</span>
+      <span class="ufg-marker" data-target=".uf-pill" aria-hidden="true">2</span>
+      <span class="ufg-marker" data-target=".uf-desktop" aria-hidden="true">3</span>
+      <span class="ufg-marker" data-target=".uf-mobile" data-side="right" aria-hidden="true">4</span>
+      <span class="ufg-marker" data-target=".uf-url" aria-hidden="true">5</span>
+      <span class="ufg-marker" data-target=".uf-url + .uf-url" aria-hidden="true">6</span>
+      <span class="ufg-marker" data-target=".uf-note" aria-hidden="true">7</span>
+    </div>
+  </div>
+
+  <ol class="ufg-anatomy__key govuk-body">
+    <li><span class="ufg-key-num">1</span><p><strong>Step number</strong> – where the screen comes in the journey</p></li>
+    <li><span class="ufg-key-num">2</span><p><strong>Page title</strong> – select it to open the page in the prototype</p></li>
+    <li><span class="ufg-key-num">3</span><p><strong>Desktop screen</strong> – a simple wireframe of the page on a computer</p></li>
+    <li><span class="ufg-key-num">4</span><p><strong>Mobile screen</strong> – the same page on a phone</p></li>
+    <li><span class="ufg-key-num">5</span><p><strong>Live</strong> – the page’s address on the live service. This is not a link.</p></li>
+    <li><span class="ufg-key-num">6</span><p><strong>Prototype</strong> – a link to the page in this prototype</p></li>
+    <li><span class="ufg-key-num">7</span><p><strong>Note</strong> – extra information about the page, if there is any</p></li>
+  </ol>
+</div>
+
+<p class="govuk-body">Not every step has a live address, prototype link or note. If a page is not on the live service yet, or has not been built in the prototype, that part is left out.</p>
+
+<h2 class="govuk-heading-l">Following a journey</h2>
+
+<p class="govuk-body">Each grey box is one journey. Read it from left to right, following the arrows. When a journey is too long to fit across the page, it carries on from the left on the next line.</p>
+
+<div class="ufg-example">
+  <p class="ufg-example__label">Example <span>The end of the main journey</span></p>
+  <div class="ufg-example__preview">
+    <section class="uf-journey">
+      <h3 class="govuk-heading-m">Main journey</h3>
+      <ol class="uf-steps">
+        {{ ufStep({ "type": "text", "title": "Contact details", "live": "/contact-details", "prototype": "/example/contact-details" }, 10) }}
+        {{ ufStep({ "type": "check", "title": "Check your answers", "live": "/check-answers" }, 11) }}
+        {{ ufStep({ "type": "confirmation", "title": "Application sent", "live": "/confirmation", "prototype": "/example/confirmation" }, 12) }}
+      </ol>
+    </section>
+  </div>
+</div>
+
+<h2 class="govuk-heading-l">What the wireframes show</h2>
+
+<p class="govuk-body">The screens are simple wireframes, not designs. They show the type of page and its main parts, so you can recognise it quickly. They do not show the real words on the page.</p>
+
+<table class="govuk-table">
+  <caption class="govuk-table__caption govuk-table__caption--m">Key to the wireframes</caption>
+  <thead class="govuk-table__head">
+    <tr class="govuk-table__row">
+      <th scope="col" class="govuk-table__header">In the wireframe</th>
+      <th scope="col" class="govuk-table__header">What it means</th>
+    </tr>
+  </thead>
+  <tbody class="govuk-table__body">
+    <tr class="govuk-table__row">
+      <td class="govuk-table__cell"><svg width="80" height="12" aria-hidden="true" focusable="false"><rect y="3" width="80" height="6" fill="#8a8a8a"/></svg></td>
+      <td class="govuk-table__cell">A heading</td>
+    </tr>
+    <tr class="govuk-table__row">
+      <td class="govuk-table__cell"><svg width="80" height="12" aria-hidden="true" focusable="false"><rect y="5" width="80" height="2" fill="#d8d8d8"/></svg></td>
+      <td class="govuk-table__cell">Body text</td>
+    </tr>
+    <tr class="govuk-table__row">
+      <td class="govuk-table__cell"><svg width="80" height="12" aria-hidden="true" focusable="false"><rect y="5" width="60" height="2" fill="#8fb3e0"/></svg></td>
+      <td class="govuk-table__cell">A link</td>
+    </tr>
+    <tr class="govuk-table__row">
+      <td class="govuk-table__cell"><svg width="80" height="14" aria-hidden="true" focusable="false"><rect width="40" height="14" fill="#00703c"/></svg></td>
+      <td class="govuk-table__cell">A button</td>
+    </tr>
+    <tr class="govuk-table__row">
+      <td class="govuk-table__cell"><svg width="80" height="14" aria-hidden="true" focusable="false"><rect x="1" y="1" width="50" height="12" fill="#fff" stroke="#505a5f" stroke-width="1.5"/></svg></td>
+      <td class="govuk-table__cell">A text box or other form field</td>
+    </tr>
+    <tr class="govuk-table__row">
+      <td class="govuk-table__cell"><svg width="80" height="14" aria-hidden="true" focusable="false"><rect width="80" height="14" fill="#1d70b8"/></svg></td>
+      <td class="govuk-table__cell">The blue header used on full screen map pages</td>
+    </tr>
+  </tbody>
+</table>
+
+<p class="govuk-body">To see every kind of screen, go to <a class="govuk-link" href="/guide/screen-types">screen types</a>.</p>
+
+<h2 class="govuk-heading-l">Changing what you see</h2>
+
+<p class="govuk-body">Use the buttons at the top of a user flow to show:</p>
+<ul class="govuk-list govuk-list--bullet">
+  <li><strong>Desktop</strong> – desktop screens only, which fits more steps on each line</li>
+  <li><strong>Mobile</strong> – phone screens only</li>
+  <li><strong>Desktop and mobile</strong> – both, side by side</li>
+</ul>
+<p class="govuk-body">The user flow remembers your choice next time you open it in the same browser.</p>
+
+<h2 class="govuk-heading-l">Printing</h2>
+
+<p class="govuk-body">Select <strong>Print</strong> to print the user flow or save it as a PDF. Each journey is kept on one page where it fits. The buttons, header and footer are left out.</p>
+
+<div class="govuk-inset-text">
+  For a wall or a workshop, choose <strong>Desktop</strong> before you print, and set your printer to landscape.
+</div>
+{% endblock %}

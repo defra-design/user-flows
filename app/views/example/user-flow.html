@@ -1,0 +1,198 @@
+{% extends "layouts/main.html" %}
+{% from "includes/user-flow/wireframes.njk" import ufStyles, ufDevices, ufStep, ufChoiceStep, ufOtherPage, ufScreenTypes %}
+
+{#
+  GOV.UK user flow
+  ----------------
+  This is the user flow for the example service. Copy this file into your
+  own prototype to make a user flow for your service.
+  Guide: /guide
+
+  The screens, steps and styles are drawn by the shared file
+  app/views/includes/user-flow/wireframes.njk, so you only need to edit
+  the two lists below.
+
+  Edit the "journeys" list below to describe your service.
+  Each journey is one row of screens joined by arrows. Use extra journeys
+  for alternative routes (for example "Not eligible" or "Returning user").
+
+  Each step takes:
+    type  – one of: hero, start, signin, tasklist, text, radio,
+            checkbox, check, dashboard, confirmation, map,
+            draw-polygon, draw-square, upload, results, content
+    title     – the label shown above the screen
+    live      – (optional) the URL on the live service, shown as plain text
+    prototype – (optional) the page in your prototype, shown as a link
+                (the screen title links to it too)
+    note      – (optional) a short note shown under the screen
+
+  A step can instead be a choice between screens. Give it "choice" (a short
+  label) and "options" (a list of steps). The options are shown side by side
+  in a dashed box and count as one step in the journey.
+
+  Pages outside the main flow go in "otherPages" (below the journeys).
+  They take the same fields, plus:
+    from – a list of the pages that link to it
+#}
+
+{% set serviceName = "Apply for a woodland creation grant" %}
+
+{% set journeys = [
+  {
+    "heading": "Main journey",
+    "steps": [
+      { "type": "start",        "title": "Start page", "live": "/", "prototype": "start" },
+      { "type": "radio",        "title": "Who owns the land", "live": "/eligibility", "prototype": "eligibility", "note": "Users who do not own or manage the land go to the ‘Not eligible’ journey" },
+      { "type": "signin",       "title": "Sign in", "live": "/sign-in", "prototype": "sign-in" },
+      { "type": "tasklist",     "title": "Your application", "live": "/task-list", "prototype": "task-list" },
+      { "type": "text",         "title": "Find your land", "live": "/find-land", "prototype": "find-land", "note": "Postcode or grid reference" },
+      { "type": "map",          "title": "Map of your land", "live": "/map", "prototype": "map", "note": "User chooses how to add the planting area" },
+      { "choice": "Add the planting area", "options": [
+        { "type": "draw-polygon", "title": "Draw the area", "live": "/map", "prototype": "draw", "note": "Drawn on the map" },
+        { "type": "draw-square",  "title": "Add a square", "live": "/map", "prototype": "draw", "note": "Drawn on the map" },
+        { "type": "upload",       "title": "Upload a boundary file", "live": "/upload", "prototype": "upload", "note": "GeoJSON or Shape files, up to 50MB" }
+      ] },
+      { "type": "checkbox",     "title": "Type of trees", "live": "/tree-types", "prototype": "tree-types" },
+      { "type": "results",      "title": "Your grant estimate", "live": "/estimate", "prototype": "estimate", "note": "User can optionally read the grant rules, see pages outside the main flow" },
+      { "type": "text",         "title": "Contact details", "live": "/contact-details", "prototype": "contact-details" },
+      { "type": "check",        "title": "Check your answers", "live": "/check-answers", "prototype": "check-answers" },
+      { "type": "confirmation", "title": "Application sent", "live": "/confirmation", "prototype": "confirmation" }
+    ]
+  },
+  {
+    "heading": "Not eligible",
+    "steps": [
+      { "type": "start",        "title": "Start page", "live": "/", "prototype": "start" },
+      { "type": "radio",        "title": "Who owns the land", "live": "/eligibility", "prototype": "eligibility", "note": "User selects ‘Someone else’" },
+      { "type": "content",      "title": "You cannot apply", "live": "/not-eligible", "prototype": "not-eligible", "note": "Tells the user to ask the landowner to apply" }
+    ]
+  }
+] %}
+
+{% set otherPages = [
+  {
+    "type": "content",
+    "title": "Grant rules",
+    "live": "/grant-rules",
+    "prototype": "grant-rules",
+    "note": "Optional. What the grant pays for and how much",
+    "from": ["Start page", "Your grant estimate"]
+  },
+  {
+    "type": "content",
+    "title": "Help using the map",
+    "live": "/map-help",
+    "prototype": "map-help",
+    "from": ["Map of your land"]
+  }
+] %}
+
+{% set pageName = "User flow" %}
+
+{% block pageTitle %}{{ pageName }} – {{ serviceName }}{% endblock %}
+
+{% block beforeContent %}
+  <a id="uf-back-link" href="/" class="govuk-back-link uf-no-print">Back</a>
+  <script>
+    // Go back to the page the user flow was opened from, falling back to the home page.
+    // The guide is skipped so its back link and this one don't send people round in a loop.
+    (function () {
+      var link = document.getElementById('uf-back-link')
+      try {
+        var ref = document.referrer && new URL(document.referrer)
+        if (ref && ref.origin === window.location.origin && ref.pathname !== window.location.pathname &&
+            ref.pathname !== '/guide' && ref.pathname.indexOf('/guide/') !== 0) {
+          link.href = ref.pathname + ref.search
+        }
+      } catch (e) {}
+    })()
+  </script>
+{% endblock %}
+
+{% block content %}
+{{ ufStyles() }}
+<style>
+  /* ---------- Page only ---------- */
+  .uf-toolbar { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
+  .uf-toolbar .govuk-button { margin-bottom: 0; }
+  .uf-toolbar .govuk-button[aria-pressed="true"] { background: #0b0c0c; color: #fff; box-shadow: 0 2px 0 #505a5f; }
+</style>
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-full">
+    <span class="govuk-caption-l">{{ serviceName }}</span>
+    <h1 class="govuk-heading-l">User flow</h1>
+    <p class="govuk-body uf-no-print"><a class="govuk-link" href="/guide">How to use the user flows</a></p>
+
+    <div class="uf-toolbar" role="group" aria-label="Choose which screens to show">
+      <button type="button" class="govuk-button govuk-button--secondary" data-uf-view="desktop" aria-pressed="false">Desktop</button>
+      <button type="button" class="govuk-button govuk-button--secondary" data-uf-view="mobile" aria-pressed="false">Mobile</button>
+      <button type="button" class="govuk-button govuk-button--secondary" data-uf-view="both" aria-pressed="true">Desktop and mobile</button>
+      <button type="button" class="govuk-button govuk-button--secondary" onclick="window.print()">Print</button>
+    </div>
+
+    <div id="uf-flows">
+      {% for journey in journeys %}
+      <section class="uf-journey">
+        <h2 class="govuk-heading-m">{{ journey.heading }}</h2>
+        <ol class="uf-steps">
+          {% for step in journey.steps %}
+          {% if step.options %}{{ ufChoiceStep(step, loop.index) }}{% else %}{{ ufStep(step, loop.index) }}{% endif %}
+          {% endfor %}
+        </ol>
+      </section>
+      {% endfor %}
+
+      {% if otherPages | length %}
+      <section class="uf-journey uf-journey--other">
+        <h2 class="govuk-heading-m">Pages outside the main flow</h2>
+        <ul class="uf-steps">
+          {% for page in otherPages %}
+          {{ ufOtherPage(page) }}
+          {% endfor %}
+        </ul>
+      </section>
+      {% endif %}
+    </div>
+
+    <details class="govuk-details uf-no-print">
+      <summary class="govuk-details__summary">
+        <span class="govuk-details__summary-text">Screen types you can use</span>
+      </summary>
+      <div class="govuk-details__text">
+        <ul class="uf-key">
+          {% for t in ufScreenTypes %}
+          <li>
+            <span class="uf-pill">{{ t.name }}</span>
+            {{ ufDevices(t.type) }}
+            <code>"type": "{{ t.type }}"</code>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </details>
+  </div>
+</div>
+
+<script>
+  (function () {
+    var root = document.getElementById('uf-flows')
+    var key = document.querySelector('.uf-key')
+    var buttons = document.querySelectorAll('[data-uf-view]')
+    function setView (view) {
+      [root, key].forEach(function (el) {
+        el.classList.remove('uf--desktop', 'uf--mobile')
+        if (view !== 'both') el.classList.add('uf--' + view)
+      })
+      buttons.forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-uf-view') === view) })
+      try { localStorage.setItem('uf-view', view) } catch (e) {}
+    }
+    buttons.forEach(function (b) {
+      b.addEventListener('click', function () { setView(b.getAttribute('data-uf-view')) })
+    })
+    var saved = 'both'
+    try { saved = localStorage.getItem('uf-view') || 'both' } catch (e) {}
+    setView(saved)
+  })()
+</script>
+{% endblock %}

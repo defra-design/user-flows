@@ -1,0 +1,211 @@
+{% extends "layouts/main.html" %}
+{% from "includes/user-flow/wireframes.njk" import ufStyles, ufDevices, ufStep, ufChoiceStep, ufOtherPage, ufScreenTypes %}
+
+{#
+  Layout for the user flow guide (app/views/guide/).
+
+  Each page sets:
+    pageName    – the page title
+    pageUrl     – the page's address, used to highlight it in the side navigation
+  and puts its content in {% block guideContent %}.
+
+  To add a page, add it to "guideNav" below. The previous and next links
+  follow the order of this list.
+#}
+
+{% set guideNav = [
+  {
+    "heading": "",
+    "pages": [
+      { "url": "/guide", "title": "Overview" }
+    ]
+  },
+  {
+    "heading": "Reading a user flow",
+    "pages": [
+      { "url": "/guide/reading", "title": "How to read a user flow" },
+      { "url": "/guide/choices-and-other-pages", "title": "Choices and other pages" },
+      { "url": "/guide/screen-types", "title": "Screen types" }
+    ]
+  },
+  {
+    "heading": "Creating and managing",
+    "pages": [
+      { "url": "/guide/add-to-your-prototype", "title": "Add a user flow to your prototype" },
+      { "url": "/guide/getting-started", "title": "Getting started" },
+      { "url": "/guide/steps", "title": "Steps" },
+      { "url": "/guide/choice-steps", "title": "Choice steps" },
+      { "url": "/guide/other-pages", "title": "Pages outside the main flow" },
+      { "url": "/guide/journeys", "title": "Journeys" },
+      { "url": "/guide/links", "title": "Linking to prototype pages" },
+      { "url": "/guide/troubleshooting", "title": "If the page does not load" }
+    ]
+  }
+] %}
+
+{# Work out the section, and the previous and next pages #}
+{# Nunjucks loops can't change variables outside them, so these build lists with push #}
+{% set flatPages = [] %}
+{% set found = [] %}
+{% for section in guideNav %}{% for p in section.pages %}
+  {% if p.url == pageUrl %}{% set ignore = found.push(flatPages.length) %}{% endif %}
+  {% set ignore = flatPages.push({ "url": p.url, "title": p.title, "section": section.heading }) %}
+{% endfor %}{% endfor %}
+{% set currentIndex = found[0] if found.length else -1 %}
+{% set currentSection = flatPages[currentIndex].section if currentIndex >= 0 else "" %}
+
+{% block pageTitle %}{{ pageName }}{% if pageName != "User flows" %} – User flows{% endif %} – Defra design{% endblock %}
+
+{% block beforeContent %}
+  {{ govukBreadcrumbs({
+    items: [
+      { text: "Home", href: "/" },
+      { text: "User flow guide", href: "/guide" }
+    ] if pageUrl != "/guide" else [
+      { text: "Home", href: "/" }
+    ]
+  }) }}
+{% endblock %}
+
+{% block content %}
+{{ ufStyles() }}
+<style>
+  /* ---------- Side navigation ---------- */
+  .ufg-subnav { font-family: "GDS Transport", arial, sans-serif; margin-bottom: 30px; }
+  .ufg-subnav__heading { font-size: 16px; font-weight: 700; color: #505a5f; margin: 25px 0 8px; }
+  .ufg-subnav__heading:first-child { margin-top: 0; }
+  .ufg-subnav ul { list-style: none; margin: 0; padding: 0; }
+  .ufg-subnav li { margin: 0; padding: 4px 0 4px 12px; border-left: 4px solid transparent; font-size: 16px; line-height: 1.25; }
+  .ufg-subnav li[aria-current] { border-left-color: #1d70b8; background: #f3f2f1; font-weight: 700; }
+  .ufg-subnav a { color: #1d70b8; }
+  .ufg-subnav a:visited { color: #1d70b8; }
+  .ufg-subnav li[aria-current] a { color: #0b0c0c; text-decoration: none; }
+  @media (max-width: 640px) {
+    .ufg-subnav { border-bottom: 1px solid #b1b4b6; padding-bottom: 20px; }
+  }
+
+  /* ---------- Examples: a preview with its code, like the GOV.UK Design System ---------- */
+  .ufg-example { margin: 0 0 30px; border: 1px solid #b1b4b6; }
+  .ufg-example__label {
+    display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap;
+    margin: 0; padding: 8px 15px; background: #f3f2f1; border-bottom: 1px solid #b1b4b6;
+    font-family: "GDS Transport", arial, sans-serif; font-size: 16px; font-weight: 700;
+  }
+  .ufg-example__label span { font-weight: 400; color: #505a5f; }
+  .ufg-example__preview { padding: 20px; background: #fff; overflow-x: auto; }
+  .ufg-example__preview .uf-journey { margin-bottom: 0; }
+  .ufg-example__code {
+    display: block; overflow-x: auto; margin: 0; padding: 15px; border-top: 1px solid #b1b4b6;
+    background: #f8f8f8; font-family: monospace; font-size: 15px; line-height: 1.5; white-space: pre; color: #0b0c0c;
+  }
+  .ufg-code {
+    display: block; overflow-x: auto; margin: 0 0 30px; padding: 15px;
+    background: #f3f2f1; border-left: 5px solid #b1b4b6;
+    font-family: monospace; font-size: 15px; line-height: 1.5; white-space: pre; color: #0b0c0c;
+  }
+  .ufg-code mark { background: #ffdd00; color: #0b0c0c; padding: 0 2px; }
+
+  /* ---------- Do and don't ---------- */
+  .ufg-dodont { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px; }
+  @media (max-width: 640px) { .ufg-dodont { grid-template-columns: 1fr; } }
+  .ufg-dodont > div { border-top: 5px solid #00703c; background: #f3f2f1; padding: 15px 15px 0; }
+  .ufg-dodont > .ufg-dont { border-top-color: #d4351c; }
+  .ufg-dodont h3 { margin-top: 0; }
+
+  /* ---------- Annotated example ---------- */
+  .ufg-annotated { position: relative; display: inline-block; }
+  .ufg-marker, .ufg-key-num {
+    display: inline-flex; align-items: center; justify-content: center; flex: none;
+    width: 26px; height: 26px; border-radius: 50%; background: #1d70b8; color: #fff;
+    font: 700 15px/1 "GDS Transport", arial, sans-serif;
+  }
+  .ufg-marker { position: absolute; box-shadow: 0 0 0 2px #fff; z-index: 1; }
+  .ufg-anatomy { display: flex; gap: 40px; align-items: flex-start; flex-wrap: wrap; margin-bottom: 30px; }
+  .ufg-anatomy__figure { font-family: "GDS Transport", arial, sans-serif; background: #f3f2f1; padding: 25px 45px 15px 45px; }
+  .ufg-anatomy__figure .uf-steps { display: block; }
+  .ufg-anatomy__key { flex: 1; min-width: 260px; list-style: none; margin: 0; padding: 0; }
+  .ufg-anatomy__key li { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 15px; }
+  .ufg-anatomy__key p { margin: 2px 0 0; }
+
+  /* ---------- Cards on the overview ---------- */
+  .ufg-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 40px; }
+  @media (max-width: 640px) { .ufg-cards { grid-template-columns: 1fr; } }
+  .ufg-card { border-top: 5px solid #1d70b8; background: #f3f2f1; padding: 20px 20px 5px; }
+  .ufg-card--designers { border-top-color: #00703c; }
+  .ufg-card h2 { margin-top: 0; }
+
+  /* ---------- Screen type gallery ---------- */
+  .ufg-gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; list-style: none; margin: 0 0 30px; padding: 0; }
+  .ufg-gallery li { display: flex; flex-direction: column; align-items: center; text-align: center; background: #f3f2f1; padding: 15px 10px; font-family: "GDS Transport", arial, sans-serif; }
+  .ufg-gallery .uf-pill { margin-bottom: 12px; }
+  .ufg-gallery code { display: inline-block; margin: 12px 0 6px; font-size: 14px; background: #fff; padding: 2px 6px; }
+  .ufg-gallery p { font-size: 16px; margin: 0; color: #0b0c0c; }
+
+  /* ---------- File map ---------- */
+  .ufg-file { border: 2px solid #0b0c0c; margin-bottom: 30px; font-family: "GDS Transport", arial, sans-serif; }
+  .ufg-file__name { background: #0b0c0c; color: #fff; padding: 6px 12px; font-family: monospace; font-size: 15px; }
+  .ufg-file__part { display: grid; grid-template-columns: 180px 1fr; gap: 15px; padding: 12px; border-top: 1px solid #b1b4b6; align-items: start; }
+  .ufg-file__name + .ufg-file__part { border-top: 0; }
+  .ufg-file__part code { font-size: 15px; }
+  .ufg-file__part p { margin: 0; font-size: 16px; }
+  .ufg-file__part--edit { background: #e7f1e9; border-left: 6px solid #00703c; }
+  .ufg-file__part--leave { background: #f3f2f1; color: #505a5f; }
+  @media (max-width: 640px) { .ufg-file__part { grid-template-columns: 1fr; gap: 4px; } }
+  .ufg-tag { display: inline-block; font-size: 14px; font-weight: 700; padding: 2px 6px; margin-bottom: 4px; }
+  .ufg-tag--edit { background: #cce2d8; color: #005a30; }
+  .ufg-tag--leave { background: #e5e6e7; color: #383f43; }
+</style>
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-one-quarter">
+    <nav class="ufg-subnav" aria-label="User flow guide">
+      {% for section in guideNav %}
+        {% if section.heading %}<h2 class="ufg-subnav__heading">{{ section.heading }}</h2>{% endif %}
+        <ul>
+          {% for p in section.pages %}
+          <li {% if p.url == pageUrl %}aria-current="page"{% endif %}><a class="govuk-link govuk-link--no-underline" href="{{ p.url }}">{{ p.title }}</a></li>
+          {% endfor %}
+        </ul>
+      {% endfor %}
+    </nav>
+  </div>
+
+  <div class="govuk-grid-column-three-quarters">
+    {% if currentSection %}<span class="govuk-caption-l">{{ currentSection }}</span>{% endif %}
+    {% block guideContent %}{% endblock %}
+
+    {% set prevPage = flatPages[currentIndex - 1] if currentIndex > 0 else false %}
+    {% set nextPage = flatPages[currentIndex + 1] if currentIndex >= 0 and currentIndex < flatPages.length - 1 else false %}
+    {% if prevPage or nextPage %}
+    {{ govukPagination({
+      previous: { labelText: prevPage.title, href: prevPage.url } if prevPage else undefined,
+      next: { labelText: nextPage.title, href: nextPage.url } if nextPage else undefined,
+      block: true
+    }) }}
+    {% endif %}
+  </div>
+</div>
+
+<script>
+  // Place numbered markers on annotated examples. Each marker names a part of the
+  // example with data-target (a CSS selector), and is placed to its left
+  // (or to its right with data-side="right"), halfway down.
+  (function () {
+    function place () {
+      document.querySelectorAll('.ufg-annotated').forEach(function (box) {
+        var origin = box.getBoundingClientRect()
+        box.querySelectorAll('.ufg-marker').forEach(function (m) {
+          var el = box.querySelector(m.getAttribute('data-target'))
+          if (!el) { m.hidden = true; return }
+          var r = el.getBoundingClientRect()
+          m.style.left = (m.getAttribute('data-side') === 'right' ? r.right - origin.left + 8 : r.left - origin.left - 34) + 'px'
+          m.style.top = (r.top - origin.top + r.height / 2 - 13) + 'px'
+        })
+      })
+    }
+    place()
+    window.addEventListener('resize', place)
+    window.addEventListener('load', place)
+  })()
+</script>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends "layouts/example.html" %}
+
+{% set pageName = "Your grant estimate" %}
+{% set backLink = "/example/tree-types" %}
+
+{% block content %}
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <h1 class="govuk-heading-l">Your grant estimate</h1>
+    <p class="govuk-body">Based on what you’ve told us, you could get:</p>
+    <ul class="govuk-list govuk-list--bullet">
+      <li>£8,500 per hectare for planting</li>
+      <li>£350 per hectare each year for 10 years for maintenance</li>
+    </ul>
+    {{ govukSummaryList({
+      card: { title: { text: "Planting area" }, actions: { items: [{ href: "/example/map", text: "Change", visuallyHiddenText: "planting area" }] } },
+      rows: [
+        { key: { text: "Location" }, value: { text: data.location or "SK 12345 67890" } },
+        { key: { text: "Size" }, value: { text: "4.2 hectares" } }
+      ]
+    }) }}
+    {{ govukSummaryList({
+      card: { title: { text: "Trees" }, actions: { items: [{ href: "/example/tree-types", text: "Change", visuallyHiddenText: "trees" }] } },
+      rows: [
+        { key: { text: "Type of trees" }, value: { text: (data.treeTypes | join(", ")) if data.treeTypes else "Broadleaf" } }
+      ]
+    }) }}
+    <p class="govuk-body">Read the <a class="govuk-link" href="/example/grant-rules">grant rules</a> to see what the grant pays for.</p>
+    {{ govukButton({ text: "Continue", href: "/example/contact-details" }) }}
+  </div>
+</div>
+{% endblock %}

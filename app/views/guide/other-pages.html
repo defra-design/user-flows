@@ -1,0 +1,57 @@
+{% extends "layouts/user-flow-guide.html" %}
+{% set pageName = "Pages outside the main flow" %}
+{% set pageUrl = "/guide/other-pages" %}
+
+{% block guideContent %}
+<h1 class="govuk-heading-xl">Pages outside the main flow</h1>
+
+<p class="govuk-body-l">Some pages are not visited in a set order. Add them to the <code>otherPages</code> list and they appear in a dashed box at the bottom of the user flow.</p>
+
+<div class="ufg-example">
+  <p class="ufg-example__label">Example <span>An optional page</span></p>
+  <div class="ufg-example__preview">
+    <section class="uf-journey uf-journey--other">
+      <ul class="uf-steps">
+        {{ ufOtherPage({ "type": "content", "title": "Grant rules", "live": "/grant-rules", "prototype": "/example/grant-rules", "note": "Optional. What the grant pays for and how much", "from": ["Start page", "Your grant estimate"] }) }}
+      </ul>
+    </section>
+  </div>
+  <pre class="ufg-example__code">{
+  "type": "content",
+  "title": "Grant rules",
+  "live": "/grant-rules",
+  "prototype": "grant-rules",
+  "note": "Optional. What the grant pays for and how much",
+  "from": ["Start page", "Your grant estimate"]
+},</pre>
+</div>
+
+<p class="govuk-body">They use the same fields as <a class="govuk-link" href="/guide/steps">steps</a>, plus <code>from</code> – a list of the pages that link to it. These pages have no arrows or step numbers.</p>
+
+<h2 class="govuk-heading-l">What goes here</h2>
+
+<div class="ufg-dodont">
+  <div>
+    <h3 class="govuk-heading-s">Add a page here when</h3>
+    <ul class="govuk-list govuk-list--bullet">
+      <li>it can be opened from several places, like a help page</li>
+      <li>the user does not have to visit it to carry on, like the grant rules</li>
+      <li>it is guidance, like help using the map</li>
+    </ul>
+  </div>
+  <div class="ufg-dont">
+    <h3 class="govuk-heading-s">Do not add a page here when</h3>
+    <ul class="govuk-list govuk-list--bullet">
+      <li>every user goes through it – make it a <a class="govuk-link" href="/guide/steps">step</a></li>
+      <li>the user must pick it or another page to carry on – use a <a class="govuk-link" href="/guide/choice-steps">choice step</a></li>
+    </ul>
+  </div>
+</div>
+
+<h2 class="govuk-heading-l">Pointing to it from the journey</h2>
+
+<p class="govuk-body">If a step in the main journey links to an optional page, add a <code>note</code> to that step so readers know it is there:</p>
+
+<pre class="ufg-code">{ "type": "results", "title": "Your grant estimate", "live": "/estimate", "prototype": "estimate",
+  "note": "User can optionally read the grant rules, see pages outside the main flow" },</pre>
+{% endblock %}

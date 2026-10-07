@@ -1,0 +1,22 @@
+{% extends "layouts/example.html" %}
+
+{% set pageName = "Map of your land" %}
+{% set backLink = "/example/find-land" %}
+
+{% block content %}
+<span class="govuk-caption-l">{{ data.location or "SK 12345 67890" }}</span>
+<h1 class="govuk-heading-l">Add the area you want to plant</h1>
+<div class="app-example-map" role="img" aria-label="Map placeholder">
+  <p class="govuk-body govuk-!-margin-0">A full screen map goes here in the real service</p>
+</div>
+<style>
+  .app-example-map { display: flex; align-items: center; justify-content: center; min-height: 360px; margin-bottom: 30px;
+    background: repeating-linear-gradient(45deg, #e3ecd9 0 20px, #d7e6c6 20px 40px); border: 1px solid #b1b4b6; text-align: center; padding: 20px; }
+</style>
+<div class="govuk-button-group">
+  {{ govukButton({ text: "Draw the area", href: "/example/draw" }) }}
+  {{ govukButton({ text: "Add a square", href: "/example/draw", classes: "govuk-button--secondary" }) }}
+  {{ govukButton({ text: "Upload a boundary file", href: "/example/upload", classes: "govuk-button--secondary" }) }}
+</div>
+<p class="govuk-body"><a class="govuk-link" href="/example/map-help">Help using the map</a></p>
+{% endblock %}

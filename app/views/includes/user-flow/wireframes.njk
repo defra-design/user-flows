@@ -1,0 +1,570 @@
+{#
+  User flow wireframes
+  --------------------
+  Shared by every user-flow.html in the prototype and the user flow guide
+  (app/views/guide/).
+
+  Import what you need:
+    {% from "includes/user-flow/wireframes.njk" import ufStyles, ufDevices, ufStep, ufChoiceStep, ufOtherPage, ufScreenTypes %}
+
+  ufStyles()                  – the <style> block. Output it once per page.
+  ufDevices(type)             – desktop and mobile wireframes for a screen type
+  ufStep(step, number)        – one step in a journey (an <li>)
+  ufChoiceStep(step, number)  – a choice step in a journey (an <li>)
+  ufOtherPage(page)           – a page outside the main flow (an <li>)
+  ufScreenTypes               – every screen type, with a name and what it's for
+
+  To add a screen type: add a branch to ufScreen, any CSS to ufStyles,
+  and an entry to ufScreenTypes.
+#}
+
+{% set ufScreenTypes = [
+  { "type": "start",        "name": "Start page",      "use": "Start page with a “Start now” button" },
+  { "type": "hero",         "name": "Hero",            "use": "Landing page with a blue banner" },
+  { "type": "signin",       "name": "Sign in",         "use": "Sign in page" },
+  { "type": "tasklist",     "name": "Task list",       "use": "Task list" },
+  { "type": "text",         "name": "Q: Text",         "use": "Question with a text input, such as contact details" },
+  { "type": "radio",        "name": "Q: Radio",        "use": "Question with radio buttons, such as an eligibility question" },
+  { "type": "checkbox",     "name": "Q: Checkbox",     "use": "Question with checkboxes" },
+  { "type": "check",        "name": "Check answers",   "use": "Check your answers" },
+  { "type": "confirmation", "name": "Confirmation",    "use": "Confirmation page with a green panel" },
+  { "type": "dashboard",    "name": "Dashboard",       "use": "Dashboard with search and a table" },
+  { "type": "map",          "name": "Full screen map", "use": "Full screen map with side panel, key and controls" },
+  { "type": "draw-polygon", "name": "Draw a polygon",  "use": "Drawing a polygon site boundary on the map" },
+  { "type": "draw-square",  "name": "Add a square",    "use": "Adding a square site boundary on the map" },
+  { "type": "upload",       "name": "Upload a file",   "use": "Uploading a boundary file" },
+  { "type": "results",      "name": "Results",         "use": "Results or summary page with cards" },
+  { "type": "content",      "name": "Content page",    "use": "Guidance or help page" }
+] %}
+
+{# ---------------------------------------------------------------------- #}
+{# Screen contents – shared by the desktop and mobile frames              #}
+{# ---------------------------------------------------------------------- #}
+{% macro ufScreen(type) %}
+  {% if type == "map" or type == "draw-polygon" or type == "draw-square" %}
+  <div class="uf-govuk uf-govuk--blue">GOV.UK<span>Service name</span></div>
+  <div class="uf-map">
+    {% if type != "map" %}
+    <div class="uf-map-side">
+      <i class="uf-l uf-l--dark uf-w70 uf-map-title"></i>
+      {% for i in range(0, 2 if type == "draw-square" else 1) %}
+      <i class="uf-l uf-w30"></i><i class="uf-l uf-l--dark uf-w30 uf-map-value"></i>
+      {% endfor %}
+    </div>
+    <div class="uf-map-canvas">
+      <svg viewBox="0 0 160 100" preserveAspectRatio="xMidYMid slice" focusable="false">
+        <rect width="160" height="100" fill="#e3ecd9"/>
+        <path d="M18 0 H150 V68 L40 70 L20 60 Z" fill="#f1efe6"/>
+        <rect x="14" y="0" width="5" height="46" fill="#a8dcef"/>
+        <rect x="24" y="0" width="14" height="38" fill="#dcd6c4" stroke="#c9c0a8" stroke-width="0.5"/>
+        <rect x="118" y="0" width="14" height="36" fill="#dcd6c4" stroke="#c9c0a8" stroke-width="0.5"/>
+        <rect x="64" y="27" width="22" height="30" fill="#dcd6c4" stroke="#c9c0a8" stroke-width="0.5"/>
+        <rect x="66" y="57" width="20" height="5" fill="#dcd6c4" stroke="#c9c0a8" stroke-width="0.5"/>
+        <rect x="2" y="78" width="26" height="12" fill="#dcd6c4" stroke="#c9c0a8" stroke-width="0.5"/>
+        <rect x="112" y="80" width="14" height="18" fill="#dcd6c4" stroke="#c9c0a8" stroke-width="0.5"/>
+        <g stroke="#8a8a8a" stroke-width="0.5" fill="none" stroke-dasharray="2 1">
+          <path d="M45 0 V52 H60"/><path d="M92 0 V26"/><path d="M96 34 H112 V54 H96 Z"/>
+          <path d="M60 70 Q58 80 70 84 Q80 86 88 80 Q92 74 90 70"/><path d="M110 60 V90"/>
+        </g>
+        <path d="M0 42 L55 72 L90 100" stroke="#8a8a8a" stroke-width="0.4" fill="none"/>
+        <path d="M76 84 L72 100" stroke="#d8d8d8" stroke-width="2" fill="none"/>
+        {% if type == "draw-square" %}
+        <rect x="60" y="24" width="50" height="50" fill="none" stroke="#d4351c" stroke-width="0.9"/>
+        {% else %}
+        <polygon points="63,26 85,27 86,56 65,58" fill="rgba(90,80,60,0.45)" stroke="#d4351c" stroke-width="0.9"/>
+        <g fill="#fff" stroke="#d4351c" stroke-width="0.6">
+          <circle cx="63" cy="26" r="1.3"/><circle cx="85" cy="27" r="1.3"/><circle cx="86" cy="56" r="1.3"/><circle cx="65" cy="58" r="1.3"/>
+        </g>
+        {% endif %}
+      </svg>
+      <div class="uf-map-controls"><i></i><i></i><i></i><i></i></div>
+      <div class="uf-map-actions">
+        <i class="uf-l uf-l--dark uf-w60 uf-mobile-only"></i>
+        <span class="uf-btn">Finish</span><span class="uf-btn uf-btn--grey">Cancel</span>
+      </div>
+    </div>
+    {% else %}
+    <div class="uf-map-side">
+      {% for i in range(0, 4) %}
+      <i class="uf-l uf-l--dark uf-w80"></i><i class="uf-l uf-w60"></i><i class="uf-l uf-l--link uf-w30"></i>
+      <i class="uf-map-rule"></i>
+      {% endfor %}
+      <i class="uf-l uf-l--dark uf-w60"></i>
+      <i class="uf-map-slider"></i>
+    </div>
+    <div class="uf-map-canvas">
+      <svg viewBox="0 0 160 100" preserveAspectRatio="xMidYMid slice" focusable="false">
+        <rect width="160" height="100" fill="#f1ede3"/>
+        <rect x="20" y="8" width="18" height="12" fill="#d7e6c6"/>
+        <rect x="128" y="60" width="22" height="16" fill="#d7e6c6"/>
+        <rect x="52" y="62" width="14" height="10" fill="#d7e6c6"/>
+        <g stroke="#fff" stroke-width="1.6" fill="none">
+          <path d="M0 30 L60 38 L160 26"/><path d="M40 0 L48 100"/><path d="M120 0 L130 100"/>
+          <path d="M0 80 L160 70"/><path d="M60 38 L70 100"/><path d="M140 0 L160 20"/>
+        </g>
+        <path d="M0 58 L160 46" stroke="#f3dc9a" stroke-width="2.2" fill="none"/>
+        <path d="M24 0 L30 100" stroke="#f3dc9a" stroke-width="2.2" fill="none"/>
+        <path d="M72 0 L98 0 L112 28 L120 54 L114 80 L104 100 L58 100 L72 80 L84 56 L78 30 Z" fill="#a9d0f0"/>
+        <path d="M80 0 L93 0 L105 30 L112 55 L106 78 L96 100 L72 100 L82 78 L95 55 L87 30 Z" fill="#5b66a3"/>
+        <path d="M0 48 L14 54 L22 76 L32 100 L0 100 Z" fill="#a9d0f0"/>
+        <path d="M0 68 L7 70 L17 100 L8 100 L0 86 Z" fill="#5b66a3"/>
+      </svg>
+      <i class="uf-map-search"></i>
+      <div class="uf-map-key"><i></i><i></i></div>
+      <div class="uf-map-controls"><i></i><i></i><i></i><i></i></div>
+      <div class="uf-map-sheet"><i class="uf-map-handle"></i><i class="uf-l uf-l--dark uf-w60"></i><i class="uf-l uf-w80"></i><i class="uf-l uf-l--link uf-w30"></i></div>
+    </div>
+    {% endif %}
+  </div>
+  {% elif type == "upload" or type == "results" or type == "content" %}
+  <div class="uf-govuk uf-govuk--blue">GOV.UK</div>
+  <div class="uf-servicebar"><i></i></div>
+  <div class="uf-body uf-body--compact">
+    <div class="uf-beta"><b></b><i class="uf-l uf-w60"></i></div>
+    <i class="uf-l uf-l--dark uf-w20"></i>
+    {% if type == "results" %}
+    <i class="uf-h uf-w80"></i>
+    <i class="uf-l uf-w60"></i>
+    <div class="uf-bullets"><i class="uf-l uf-w40"></i><i class="uf-l uf-w30"></i></div>
+    <i class="uf-l uf-l--dark uf-w40 uf-h2"></i>
+    <i class="uf-l"></i><i class="uf-l uf-w70"></i>
+    {% for rows in [2, 2, 3] %}
+    <div class="uf-card">
+      <div class="uf-card-head"><i class="uf-l uf-l--dark uf-w30"></i><i class="uf-l uf-l--link uf-w20"></i></div>
+      {% for r in range(0, rows) %}
+      <div class="uf-card-row">
+        <i class="uf-l uf-l--dark uf-w80"></i>
+        <div><i class="uf-l"></i><i class="uf-l uf-w70"></i><i class="uf-l uf-l--link uf-w50"></i></div>
+      </div>
+      {% endfor %}
+    </div>
+    {% endfor %}
+    {% elif type == "content" %}
+    <i class="uf-h uf-w80"></i>
+    <i class="uf-l"></i><i class="uf-l uf-w70"></i>
+    {% for i in range(0, 3) %}
+    <i class="uf-l uf-l--dark uf-w40 uf-h2"></i>
+    <i class="uf-l"></i><i class="uf-l uf-w80"></i>
+    {% if loop.first %}<div class="uf-bullets"><i class="uf-l uf-w40"></i><i class="uf-l uf-w50"></i></div>{% endif %}
+    <i class="uf-l uf-l--link uf-w40"></i>
+    {% endfor %}
+    {% else %}
+    <i class="uf-h uf-w80"></i>
+    <i class="uf-l uf-w80"></i><i class="uf-l uf-w30 uf-mobile-only"></i>
+    <i class="uf-l uf-l--dark uf-w20 uf-upload-label"></i>
+    <div class="uf-drop">
+      <i class="uf-drop-bar"></i>
+      <div class="uf-drop-row"><span class="uf-btn uf-btn--grey">Choose file</span><i class="uf-l uf-w20"></i></div>
+    </div>
+    <div class="uf-details"><b></b><i class="uf-l uf-l--link uf-w60"></i></div>
+    <span class="uf-btn">Continue</span>
+    {% endif %}
+  </div>
+  {% else %}
+  <div class="uf-govuk">GOV.UK</div>
+  <div class="uf-body">
+  {% if type == "hero" %}
+    <div class="uf-banner"><i class="uf-l uf-l--white uf-w75"></i><i class="uf-l uf-l--white uf-w40"></i></div>
+    <div class="uf-cols">
+      {% for i in range(0, 3) %}
+      <div><i class="uf-l uf-l--link"></i><i class="uf-l"></i><i class="uf-l"></i></div>
+      {% endfor %}
+    </div>
+    <div class="uf-cols">
+      {% for i in range(0, 3) %}
+      <div><i class="uf-l uf-l--link"></i><i class="uf-l"></i></div>
+      {% endfor %}
+    </div>
+
+  {% elif type == "start" %}
+    <i class="uf-l uf-w30"></i>
+    <i class="uf-h uf-w70"></i>
+    <i class="uf-h uf-w70 uf-mobile-only"></i>
+    <div class="uf-gap"></div>
+    <i class="uf-l"></i><i class="uf-l"></i><i class="uf-l uf-w80"></i>
+    <div class="uf-gap"></div>
+    <i class="uf-l"></i><i class="uf-l uf-w60"></i>
+    <div class="uf-gap uf-mobile-only"></div>
+    <span class="uf-btn">Start now &rsaquo;</span>
+
+  {% elif type == "signin" %}
+    <i class="uf-l uf-w30"></i>
+    <i class="uf-h uf-w70"></i>
+    <i class="uf-l uf-l--dark uf-w30"></i><i class="uf-input uf-w50"></i>
+    <i class="uf-l uf-l--dark uf-w30"></i><i class="uf-input uf-w50"></i>
+    <span class="uf-btn">Sign in</span>
+    <i class="uf-l uf-l--link uf-w30"></i><i class="uf-l uf-l--link uf-w50"></i>
+
+  {% elif type == "tasklist" %}
+    <i class="uf-l uf-w30"></i>
+    <i class="uf-h uf-w70"></i>
+    {% for n in [2, 1, 1] %}
+    <i class="uf-l uf-l--dark uf-w30"></i>
+    {% for i in range(0, n) %}
+    <div class="uf-row"><i class="uf-l uf-l--link uf-w60"></i><i class="uf-l uf-l--link uf-w20"></i></div>
+    {% endfor %}
+    {% endfor %}
+
+  {% elif type == "text" %}
+    <i class="uf-l uf-w30"></i>
+    <i class="uf-h uf-w70"></i>
+    <div class="uf-gap uf-mobile-only"></div>
+    <i class="uf-l uf-w30"></i>
+    <i class="uf-input uf-w50"></i>
+    <span class="uf-btn">Continue</span>
+
+  {% elif type == "radio" or type == "checkbox" %}
+    <i class="uf-l uf-w30"></i>
+    <i class="uf-h uf-w70"></i>
+    <i class="uf-l uf-w20"></i>
+    {% for i in range(0, 3) %}
+    <div class="uf-option"><i class="{{ 'uf-radio' if type == 'radio' else 'uf-check' }}"></i><i class="uf-l uf-w60"></i></div>
+    {% endfor %}
+    <span class="uf-btn">Continue</span>
+
+  {% elif type == "check" %}
+    <i class="uf-l uf-w30"></i>
+    <i class="uf-h uf-w70"></i>
+    <div class="uf-summary">
+      {% for i in range(0, 6) %}
+      <i class="uf-l uf-l--dark"></i><i class="uf-l"></i><i class="uf-l uf-l--link"></i>
+      {% endfor %}
+    </div>
+    <span class="uf-btn">Accept and send</span>
+
+  {% elif type == "dashboard" %}
+    <i class="uf-l uf-w30"></i>
+    <i class="uf-h uf-w70"></i>
+    <div class="uf-search"><i class="uf-l uf-l--dark uf-w40"></i><i class="uf-input"></i></div>
+    <div class="uf-table">
+      {% for i in range(0, 7) %}
+      <i class="uf-l"></i><i class="uf-l"></i><i class="uf-l uf-l--link"></i>
+      {% endfor %}
+    </div>
+    <i class="uf-l uf-l--link uf-w40"></i>
+
+  {% elif type == "confirmation" %}
+    <div class="uf-panel"><i class="uf-l uf-l--white uf-w80"></i><i class="uf-l uf-l--white uf-w60"></i></div>
+    <i class="uf-l uf-l--dark uf-w30"></i>
+    <i class="uf-l"></i><i class="uf-l"></i><i class="uf-l uf-w80"></i>
+    <i class="uf-l uf-l--link uf-w30"></i>
+
+  {% else %}
+    <i class="uf-h uf-w70"></i>
+    <i class="uf-l"></i><i class="uf-l"></i><i class="uf-l uf-w60"></i>
+  {% endif %}
+  </div>
+  {% endif %}
+{% endmacro %}
+
+{% macro ufDevices(type) %}
+  <div class="uf-devices">
+    <div class="uf-desktop" aria-hidden="true">
+      <div class="uf-chrome"><b></b><b></b><b></b></div>
+      <div class="uf-screen">{{ ufScreen(type) }}</div>
+    </div>
+    <div class="uf-mobile" aria-hidden="true">
+      <div class="uf-status">9:41</div>
+      <div class="uf-screen">{{ ufScreen(type) }}</div>
+    </div>
+  </div>
+{% endmacro %}
+
+{# ---------------------------------------------------------------------- #}
+{# Steps and pages                                                         #}
+{# ---------------------------------------------------------------------- #}
+{% macro ufLinks(item) %}
+  {% set protoUrl = item.prototype or item.url %}
+  {% if item.live %}<p class="uf-url"><span class="uf-url-label">Live</span>{{ item.live }}</p>{% endif %}
+  {% if protoUrl %}<p class="uf-url"><span class="uf-url-label uf-url-label--proto">Prototype</span><a class="govuk-link" href="{{ protoUrl }}">{{ protoUrl }}</a></p>{% endif %}
+{% endmacro %}
+
+{% macro ufTitle(item) %}
+  {% set protoUrl = item.prototype or item.url %}
+  <span class="uf-pill">
+    {% if protoUrl %}<a href="{{ protoUrl }}">{{ item.title }}</a>{% else %}{{ item.title }}{% endif %}
+  </span>
+{% endmacro %}
+
+{% macro ufStep(step, number) %}
+  <li class="uf-step">
+    <span class="uf-number">Step {{ number }}</span>
+    {{ ufTitle(step) }}
+    {{ ufDevices(step.type) }}
+    {{ ufLinks(step) }}
+    {% if step.note %}<p class="uf-note">{{ step.note }}</p>{% endif %}
+  </li>
+{% endmacro %}
+
+{% macro ufChoiceStep(step, number) %}
+  <li class="uf-step uf-step--choice">
+    <ul class="uf-choice" aria-label="{{ step.choice }}">
+      {% for opt in step.options %}
+      <li>
+        <span class="uf-number">{{ ("Step " ~ number ~ " – choose one") if loop.first else "or" }}</span>
+        {{ ufTitle(opt) }}
+        {{ ufDevices(opt.type) }}
+        {{ ufLinks(opt) }}
+        {% if opt.note %}<p class="uf-note">{{ opt.note }}</p>{% endif %}
+      </li>
+      {% endfor %}
+    </ul>
+  </li>
+{% endmacro %}
+
+{% macro ufOtherPage(page) %}
+  <li class="uf-step">
+    {{ ufTitle(page) }}
+    {{ ufDevices(page.type) }}
+    {{ ufLinks(page) }}
+    {% if page.from | length %}
+    <div class="uf-from">
+      <p class="uf-from-heading">Linked from</p>
+      <ul>{% for f in page.from %}<li>{{ f }}</li>{% endfor %}</ul>
+    </div>
+    {% endif %}
+    {% if page.note %}<p class="uf-note">{{ page.note }}</p>{% endif %}
+  </li>
+{% endmacro %}
+
+{# ---------------------------------------------------------------------- #}
+{# Styles                                                                  #}
+{# ---------------------------------------------------------------------- #}
+{% macro ufStyles() %}
+<style>
+  /* ---------- Page layout ---------- */
+  .uf-journey, .uf-key { font-family: "GDS Transport", arial, sans-serif; color: #0b0c0c; }
+  .uf-journey { background: #f3f2f1; padding: 20px 20px 10px; margin-bottom: 30px; }
+  .uf-steps { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 30px 44px; }
+  .uf-step { position: relative; display: flex; flex-direction: column; align-items: center; width: 200px; text-align: center; }
+  .uf--desktop .uf-step, .uf--mobile .uf-step { width: 130px; }
+  .uf-step:not(:last-child)::after {
+    content: ""; position: absolute; right: -36px; top: var(--uf-arrow, 178px);
+    width: 26px; height: 3px; background: #505a5f;
+  }
+  .uf-step:not(:last-child)::before {
+    content: ""; position: absolute; right: -37px; top: calc(var(--uf-arrow, 178px) - 5px);
+    border: 6.5px solid transparent; border-left: 9px solid #505a5f; border-right: 0;
+  }
+  .uf--desktop { --uf-arrow: 157px; }
+  .uf--mobile { --uf-arrow: 172px; }
+  .uf-number { font-size: 14px; color: #505a5f; margin-bottom: 4px; }
+  .uf-pill {
+    display: inline-block; background: #fff; border-radius: 999px; padding: 6px 16px;
+    font-weight: 700; font-size: 16px; line-height: 1.25; margin-bottom: 14px; max-width: 100%;
+  }
+  .uf-steps .uf-pill { min-height: 52px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; }
+  .uf-pill a { color: #0b0c0c; text-decoration: none; }
+  .uf-pill a:hover { text-decoration: underline; }
+  .uf-pill a:focus { background: #ffdd00; box-shadow: 0 -2px #ffdd00, 0 4px #0b0c0c; outline: none; }
+  .uf-note { font-size: 14px; color: #505a5f; margin: 8px 0 0; }
+  .uf-url { font-size: 14px; margin: 8px 0 0; word-break: break-all; }
+  .uf-url + .uf-url { margin-top: 4px; }
+  .uf-url-label {
+    display: inline-block; margin-right: 6px; padding: 1px 5px; font-size: 12px; font-weight: 700;
+    background: #cecece; color: #0b0c0c; word-break: normal;
+  }
+  .uf-url-label--proto { background: #bbd4ea; color: #0c2d4a; }
+
+  /* ---------- Choice of screens in one step ---------- */
+  .uf-step--choice { width: auto; }
+  .uf--desktop .uf-step--choice, .uf--mobile .uf-step--choice { width: auto; }
+  .uf-choice {
+    list-style: none; margin: 0; padding: 0; display: flex; gap: 20px;
+    outline: 2px dashed #b1b4b6; outline-offset: 5px;
+  }
+  .uf-choice > li { display: flex; flex-direction: column; align-items: center; width: 200px; text-align: center; }
+  .uf--desktop .uf-choice > li, .uf--mobile .uf-choice > li { width: 130px; }
+
+  /* ---------- Device frames ---------- */
+  .uf-devices { display: flex; gap: 10px; align-items: flex-end; }
+  .uf--desktop .uf-mobile, .uf--mobile .uf-desktop { display: none; }
+
+  .uf-desktop {
+    width: 104px; border: 2.5px solid #b1b4b6; border-radius: 5px; background: #f3f2f1; overflow: hidden;
+  }
+  .uf-chrome { height: 8px; display: flex; gap: 2.5px; align-items: center; padding-left: 5px; }
+  .uf-chrome b { width: 3.5px; height: 3.5px; border-radius: 50%; background: #d4351c; }
+  .uf-chrome b:nth-child(2) { background: #ffdd00; }
+  .uf-chrome b:nth-child(3) { background: #00703c; }
+  .uf-desktop .uf-screen { height: 104px; margin: 0 3px 22px; }
+
+  .uf-mobile {
+    position: relative; width: 84px; border: 3.5px solid #0b0c0c; border-radius: 12px;
+    background: #fff; overflow: hidden; padding-bottom: 8px;
+  }
+  .uf-mobile::before {
+    content: ""; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+    width: 30px; height: 5px; background: #0b0c0c; border-radius: 0 0 5px 5px;
+  }
+  .uf-status { font: 700 4.5px/7px Arial, sans-serif; padding-left: 8px; color: #0b0c0c; }
+  .uf-mobile .uf-screen { height: 148px; }
+
+  /* ---------- Screen contents ---------- */
+  .uf-screen { background: #fff; overflow: hidden; }
+  .uf-govuk {
+    background: #0b0c0c; color: #fff; font: 700 5px/9px Arial, sans-serif; padding-left: 4px;
+    border-bottom: 1.5px solid #1d70b8;
+  }
+  .uf-body { padding: 5px 6px; }
+  .uf-mobile .uf-body { padding: 5px; }
+  .uf-body i { display: block; }
+
+  .uf-l { height: 1.5px; background: #d8d8d8; margin-bottom: 2.5px; }
+  .uf-l--dark { background: #808080; }
+  .uf-l--link { background: #8fb3e0; }
+  .uf-l--white { background: #fff; height: 2px; margin-bottom: 4px; }
+  .uf-h { height: 5px; background: #8a8a8a; margin: 4px 0 7px; }
+  .uf-input { height: 6px; border: 1px solid #505a5f; margin-bottom: 5px; }
+  .uf-gap { height: 5px; }
+  .uf-btn {
+    display: inline-block; background: #00703c; color: #fff; font: 700 3.5px/1 Arial, sans-serif;
+    padding: 2px 3px; margin: 3px 0 5px; white-space: nowrap; box-shadow: 0 0.5px 0 #002d18;
+  }
+  .uf-mobile .uf-btn { display: block; text-align: center; font-size: 4px; padding: 2.5px 3px; }
+
+  .uf-w20 { width: 20%; } .uf-w30 { width: 30%; } .uf-w40 { width: 40%; } .uf-w50 { width: 50%; }
+  .uf-w60 { width: 60%; } .uf-w70 { width: 70%; } .uf-w75 { width: 75%; } .uf-w80 { width: 80%; }
+  .uf-mobile .uf-input.uf-w50 { width: 100%; }
+  .uf-mobile .uf-h { width: 100%; }
+  .uf-body .uf-mobile-only { display: none; }
+  .uf-mobile .uf-body .uf-mobile-only { display: block; }
+
+  .uf-banner { background: #1d70b8; margin: -5px -6px 8px; padding: 7px 6px 4px; }
+  .uf-mobile .uf-banner { margin: -5px -5px 8px; padding: 10px 5px 8px; }
+  .uf-cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; margin-bottom: 6px; }
+  .uf-mobile .uf-cols { grid-template-columns: 1fr; gap: 3px; }
+  .uf-mobile .uf-cols > div > i:nth-child(n+3) { display: none; }
+
+  .uf-row { display: flex; justify-content: space-between; }
+  .uf-row .uf-w60 { width: 55%; }
+  .uf-body > .uf-l--dark + .uf-row { margin-top: 3px; }
+  .uf-body > .uf-row + .uf-l--dark { margin-top: 5px; }
+
+  .uf-option { display: flex; align-items: center; gap: 3px; margin-bottom: 2px; }
+  .uf-option .uf-l { flex: 1 1 auto; max-width: 60%; margin: 0; }
+  .uf-radio, .uf-check { width: 5px; height: 5px; border: 0.75px solid #0b0c0c; flex: none; }
+  .uf-radio { border-radius: 50%; }
+  .uf-mobile .uf-radio, .uf-mobile .uf-check { width: 7px; height: 7px; }
+
+  .uf-summary { display: grid; grid-template-columns: 30% 1fr 15%; gap: 1.5px 5px; margin-bottom: 3px; }
+  .uf-summary .uf-l { margin: 0; }
+  .uf-mobile .uf-summary { grid-template-columns: 1fr; gap: 2px; }
+  .uf-mobile .uf-summary .uf-l:nth-child(3n+2) { width: 70%; }
+  .uf-mobile .uf-summary .uf-l:nth-child(3n) { width: 35%; margin-bottom: 4px; }
+  .uf-mobile .uf-summary .uf-l:nth-child(3n+1) { width: 40%; }
+
+  .uf-search { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; align-items: center; margin-bottom: 4px; }
+  .uf-search .uf-l { margin: 0; }
+  .uf-search .uf-input { margin: 0; height: 4px; border-right: 6px solid #8fb3e0; }
+  .uf-mobile .uf-search { grid-template-columns: 1fr; gap: 2px; }
+  .uf-table { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.5px 5px; margin-bottom: 4px; }
+  .uf-table .uf-l { margin: 0; }
+
+  .uf-panel { background: #00703c; padding: 5px 6px 2px; margin-bottom: 7px; }
+  .uf-mobile .uf-panel { padding: 7px 6px 4px; }
+
+  /* ---------- Full screen map ---------- */
+  .uf-govuk--blue { background: #1d70b8; border-bottom-color: #1d70b8; display: flex; }
+  .uf-govuk--blue span { flex: 1; text-align: center; padding-right: 18px; font-size: 4px; }
+  .uf-mobile .uf-govuk--blue span { display: none; }
+  .uf-map { display: flex; height: 94px; }
+  .uf-mobile .uf-map { height: 138px; }
+  .uf-map i { display: block; }
+  .uf-map-side { width: 27%; flex: none; padding: 4px 3px; border-right: 0.5px solid #b1b4b6; }
+  .uf-map-side .uf-l { height: 1.2px; margin-bottom: 1.8px; }
+  .uf-map-side .uf-l--dark { height: 2px; }
+  .uf-map-rule { height: 0.5px; background: #b1b4b6; margin: 3px 0; }
+  .uf-map-slider { height: 2.5px; border: 0.5px solid #505a5f; margin-top: 3px;
+    background: linear-gradient(90deg, #505a5f 70%, #dcdcdc 70%); border-radius: 2px; }
+  .uf-map-canvas { position: relative; flex: 1; overflow: hidden; }
+  .uf-map-canvas svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .uf-map-search { position: absolute; top: 3px; left: 3px; width: 18px; height: 5px; background: #fff; box-shadow: 0 0 0 0.5px #b1b4b6; }
+  .uf-map-key { position: absolute; top: 10px; left: 3px; width: 30px; height: 13px; background: #fff;
+    display: flex; gap: 5px; justify-content: center; padding-top: 4px; box-sizing: border-box; box-shadow: 0 0 1px rgba(0,0,0,.3); }
+  .uf-map-key i { width: 3.5px; height: 3.5px; background: #1d70b8; }
+  .uf-map-key i + i { background: #003078; }
+  .uf-map-controls { position: absolute; top: 3px; right: 2px; display: flex; flex-direction: column; gap: 1.5px; }
+  .uf-map-controls i { width: 5px; height: 5px; background: #fff; box-shadow: 0 0 0 0.5px #b1b4b6; }
+  .uf-map-controls i:nth-child(3) { margin-top: 2px; }
+  .uf-map-sheet { display: none; }
+
+  .uf-mobile .uf-map-side { display: none; }
+  .uf-mobile .uf-map-search { width: 26px; height: 7px; }
+  .uf-mobile .uf-map-key { display: none; }
+  .uf-mobile .uf-map-controls i { width: 7px; height: 7px; }
+  .uf-mobile .uf-map-sheet { display: block; position: absolute; left: 0; right: 0; bottom: 0; background: #fff;
+    padding: 3px 5px 2px; border-radius: 4px 4px 0 0; box-shadow: 0 -0.5px 2px rgba(0,0,0,.25); }
+  .uf-map-handle { width: 14px; height: 1.5px; background: #b1b4b6; border-radius: 1px; margin: 0 auto 3px; }
+
+  /* ---------- Drawing a boundary ---------- */
+  .uf-map-title { height: 2.5px !important; margin: 1px 0 5px !important; }
+  .uf-map-value { height: 2.5px !important; margin-bottom: 5px !important; }
+  .uf-map-actions {
+    position: absolute; bottom: 4px; left: 50%; transform: translateX(-50%);
+    background: #fff; padding: 2px 3px; display: flex; gap: 2px; box-shadow: 0 0 1px rgba(0,0,0,.3);
+  }
+  .uf-map-actions .uf-btn { margin: 0; }
+  .uf-btn--grey { background: #f3f2f1; color: #0b0c0c; box-shadow: 0 0.5px 0 #929191; }
+  .uf-mobile .uf-map-actions {
+    left: 0; right: 0; bottom: 0; transform: none; flex-wrap: wrap; padding: 4px 5px 3px;
+    border-radius: 4px 4px 0 0;
+  }
+  .uf-mobile .uf-map-actions .uf-l { flex: 0 0 100%; margin-bottom: 3px; }
+  .uf-mobile .uf-map-actions .uf-btn { flex: 1; }
+
+  /* ---------- Upload ---------- */
+  .uf-servicebar { background: #f4f8fb; border-bottom: 0.5px solid #8eb8dc; padding: 3px 4px; }
+  .uf-servicebar i { display: block; width: 35%; height: 2px; background: #0b0c0c; }
+  .uf-beta { display: flex; align-items: center; gap: 2px; margin-bottom: 3px; padding-bottom: 2px; border-bottom: 0.5px solid #b1b4b6; }
+  .uf-beta b { width: 7px; height: 3px; background: #bbd4ea; flex: none; }
+  .uf-beta .uf-l { margin: 0; }
+  .uf-upload-label { margin-top: 3px; }
+  .uf-body--compact { padding-top: 3px; }
+  .uf-body--compact .uf-h { margin: 2px 0 3px; }
+  .uf-body--compact .uf-l { margin-bottom: 2px; }
+  .uf-body--compact .uf-btn { margin-top: 1px; }
+  .uf-drop { border: 0.5px dashed #b1b4b6; padding: 2.5px; margin-bottom: 3px; width: 70%; }
+  .uf-mobile .uf-drop { width: auto; }
+  .uf-drop-bar { height: 4px; background: #bbd4ea; margin-bottom: 2px; }
+  .uf-drop-row { display: flex; align-items: center; gap: 2px; }
+  .uf-drop-row .uf-l { margin: 0; }
+  .uf-drop .uf-btn, .uf-mobile .uf-drop .uf-btn { display: inline-block; margin: 0; }
+  .uf-details { display: flex; align-items: center; gap: 2px; margin-bottom: 2px; }
+  .uf-details b { border: 2px solid transparent; border-left: 3px solid #1d70b8; border-right: 0; }
+  .uf-details .uf-l { margin: 0; flex: 1; max-width: 60%; }
+
+  /* ---------- Results ---------- */
+  .uf-bullets { margin: 3px 0; }
+  .uf-body .uf-bullets .uf-l { position: relative; margin-left: 3px; }
+  .uf-bullets .uf-l::before { content: ""; position: absolute; left: -2.5px; top: 0; width: 1.5px; height: 1.5px; border-radius: 50%; background: #0b0c0c; }
+  .uf-body .uf-h2 { height: 2.5px; margin: 4px 0 3px; }
+  .uf-card { border: 0.5px solid #b1b4b6; margin: 4px 0 3px; }
+  .uf-card-head { background: #f3f2f1; display: flex; justify-content: space-between; padding: 2.5px 2px 1px; }
+  .uf-card-row { display: grid; grid-template-columns: 35% 1fr; gap: 3px; margin: 0 2px; padding: 2.5px 0 1px; }
+  .uf-card-row + .uf-card-row { border-top: 0.5px solid #b1b4b6; }
+  .uf-card .uf-l { margin-bottom: 1.5px; }
+  .uf-mobile .uf-card-row { grid-template-columns: 1fr; gap: 0; }
+  .uf-mobile .uf-card-row > .uf-l--dark { width: 50%; margin-bottom: 2px; }
+
+  /* ---------- Pages outside the main flow ---------- */
+  .uf-journey--other { background: #fff; border: 2px dashed #b1b4b6; }
+  .uf-journey--other .uf-steps { gap: 30px; }
+  .uf-journey--other .uf-step::before, .uf-journey--other .uf-step::after { display: none; }
+  .uf-journey--other .uf-pill { background: #f3f2f1; }
+  .uf-from { margin-top: 10px; width: 100%; text-align: left; font-size: 14px; background: #f3f2f1; padding: 8px 10px; box-sizing: border-box; }
+  .uf-from-heading { font-weight: 700; margin: 0 0 4px; }
+  .uf-from ul { margin: 0; padding-left: 18px; }
+  .uf-from li { margin-bottom: 2px; }
+
+  /* ---------- Key ---------- */
+  .uf-key { display: flex; flex-wrap: wrap; gap: 20px; list-style: none; padding: 0; margin: 0; }
+  .uf-key li { display: flex; flex-direction: column; align-items: center; width: 200px; }
+  .uf-key code { font-size: 14px; margin-top: 6px; }
+
+  @media print {
+    .uf-toolbar, .govuk-header, .govuk-footer, .govuk-phase-banner, .uf-no-print { display: none !important; }
+    .uf-journey { break-inside: avoid; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+{% endmacro %}

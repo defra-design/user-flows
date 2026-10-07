@@ -1,0 +1,14 @@
+{% extends "layouts/example.html" %}
+
+{% set pageName = "Application sent" %}
+
+{% block content %}
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    {{ govukPanel({ titleText: "Application sent", html: "Your reference number<br><strong>WCG-4821-7731</strong>" }) }}
+    <h2 class="govuk-heading-m">What happens next</h2>
+    <p class="govuk-body">We’ll check your application and contact you within 20 working days.</p>
+    <p class="govuk-body"><a class="govuk-link" href="/example/user-flow">View the user flow for this service</a></p>
+  </div>
+</div>
+{% endblock %}

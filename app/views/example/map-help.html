@@ -1,0 +1,18 @@
+{% extends "layouts/example.html" %}
+
+{% set pageName = "Help using the map" %}
+
+{% block content %}
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <h1 class="govuk-heading-l">Help using the map</h1>
+    <h2 class="govuk-heading-m">Drawing an area</h2>
+    <p class="govuk-body">Click on the map to add each corner. Click the first point again to finish.</p>
+    <h2 class="govuk-heading-m">Adding a square</h2>
+    <p class="govuk-body">Click the centre of the area, then drag to change the size of the square.</p>
+    <h2 class="govuk-heading-m">Uploading a file</h2>
+    <p class="govuk-body">You can upload a GeoJSON or Shape file up to 50MB.</p>
+    <p class="govuk-body"><a class="govuk-link" href="/example/map">Back to the map</a></p>
+  </div>
+</div>
+{% endblock %}

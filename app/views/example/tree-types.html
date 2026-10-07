@@ -1,0 +1,25 @@
+{% extends "layouts/example.html" %}
+
+{% set pageName = "Type of trees" %}
+{% set backLink = "/example/map" %}
+
+{% block content %}
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <form action="/example/estimate" method="post" novalidate>
+      {{ govukCheckboxes({
+        name: "treeTypes",
+        fieldset: { legend: { text: "What type of trees will you plant?", isPageHeading: true, classes: "govuk-fieldset__legend--l" } },
+        hint: { text: "Select all that apply" },
+        items: [
+          { value: "broadleaf", text: "Broadleaf, like oak or beech" },
+          { value: "conifer", text: "Conifer, like pine or spruce" },
+          { value: "mixed", text: "Mixed woodland" }
+        ],
+        values: data.treeTypes
+      }) }}
+      {{ govukButton({ text: "Continue" }) }}
+    </form>
+  </div>
+</div>
+{% endblock %}

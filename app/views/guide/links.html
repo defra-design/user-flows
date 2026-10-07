@@ -1,0 +1,47 @@
+{% extends "layouts/user-flow-guide.html" %}
+{% set pageName = "Linking to prototype pages" %}
+{% set pageUrl = "/guide/links" %}
+
+{% block guideContent %}
+<h1 class="govuk-heading-xl">Linking to prototype pages</h1>
+
+<p class="govuk-body-l">Each step can show two addresses: where the page is on the live service, and a link to it in the prototype.</p>
+
+<h2 class="govuk-heading-l">Prototype links</h2>
+
+<p class="govuk-body">The <code>prototype</code> field can be written in two ways. For a user flow in <code>app/views/example/</code>, like the <a class="govuk-link" href="/example/user-flow">example user flow</a>:</p>
+
+<table class="govuk-table">
+  <thead class="govuk-table__head">
+    <tr class="govuk-table__row">
+      <th scope="col" class="govuk-table__header">You write</th>
+      <th scope="col" class="govuk-table__header">It links to</th>
+      <th scope="col" class="govuk-table__header">Use it for</th>
+    </tr>
+  </thead>
+  <tbody class="govuk-table__body">
+    <tr class="govuk-table__row">
+      <td class="govuk-table__cell"><code>"map"</code></td>
+      <td class="govuk-table__cell"><code>/example/map</code></td>
+      <td class="govuk-table__cell">A page in the same folder as the user flow. Use this most of the time.</td>
+    </tr>
+    <tr class="govuk-table__row">
+      <td class="govuk-table__cell"><code>"/v2/upload"</code></td>
+      <td class="govuk-table__cell"><code>/v2/upload</code></td>
+      <td class="govuk-table__cell">A page in another folder, such as an older version. Start with a slash.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p class="govuk-body">Leave out the <code>.html</code> at the end. The link uses the name of the file in the folder, so <code>"eligibility"</code> links to <code>app/views/example/eligibility.html</code>.</p>
+
+<div class="govuk-inset-text">
+  Before adding a link, check the page exists in the folder. If it does not, leave <code>prototype</code> empty until the page is built.
+</div>
+
+<h2 class="govuk-heading-l">Live addresses</h2>
+
+<p class="govuk-body">The <code>live</code> field is only ever shown as text, not a link. You can use placeholders for parts that change, like <code>/applications/[reference]</code>.</p>
+
+<p class="govuk-body">Only add a live address if you know it. Leave it empty for pages that are not on the live service yet.</p>
+{% endblock %}

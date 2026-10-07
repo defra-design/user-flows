@@ -1,20 +1,44 @@
 {% extends "layouts/main.html" %}
+{% from "includes/user-flow/wireframes.njk" import ufStyles, ufStep %}
 
-{% set pageName="Home" %}
+{% set pageName = "Home" %}
 
 {% block content %}
-
+{{ ufStyles() }}
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
-
-    {% include "govuk-prototype-kit/includes/homepage-top.njk" %}
-
-    <h1 class="govuk-heading-xl">
-      {{ serviceName }}
-    </h1>
-
-    {% include "govuk-prototype-kit/includes/homepage-bottom.njk" %}
+    <span class="govuk-caption-xl">Defra design</span>
+    <h1 class="govuk-heading-xl">User flows</h1>
+    <p class="govuk-body-l">A shared way to show every screen in a service’s journeys as small desktop and mobile wireframes, linked to the pages in your prototype.</p>
   </div>
 </div>
 
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-full">
+    <section class="uf-journey uf--desktop govuk-!-margin-bottom-8" aria-label="A short example">
+      <ol class="uf-steps">
+        {{ ufStep({ "type": "start", "title": "Start page", "prototype": "/example/start" }, 1) }}
+        {{ ufStep({ "type": "radio", "title": "Who owns the land", "prototype": "/example/eligibility" }, 2) }}
+        {{ ufStep({ "type": "map", "title": "Map of your land", "prototype": "/example/map" }, 3) }}
+        {{ ufStep({ "type": "confirmation", "title": "Application sent", "prototype": "/example/confirmation" }, 4) }}
+      </ol>
+    </section>
+  </div>
+</div>
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <h2 class="govuk-heading-m"><a class="govuk-link" href="/guide">User flow guide</a></h2>
+    <p class="govuk-body">How to read a user flow, and how to make and change one.</p>
+
+    <h2 class="govuk-heading-m"><a class="govuk-link" href="/guide/add-to-your-prototype">Add a user flow to your prototype</a></h2>
+    <p class="govuk-body">Copy 2 files into any GOV.UK Prototype Kit prototype.</p>
+
+    <h2 class="govuk-heading-m"><a class="govuk-link" href="/example/user-flow">Example user flow</a></h2>
+    <p class="govuk-body">The user flow for a made-up service, Apply for a woodland creation grant. Every screen links to a page in the <a class="govuk-link" href="/example/start">example service</a>.</p>
+
+    <h2 class="govuk-heading-m"><a class="govuk-link" href="/guide/screen-types">Screen types</a></h2>
+    <p class="govuk-body">Every wireframe you can use in a step.</p>
+  </div>
+</div>
 {% endblock %}

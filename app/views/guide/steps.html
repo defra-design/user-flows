@@ -1,0 +1,93 @@
+{% extends "layouts/user-flow-guide.html" %}
+{% set pageName = "Steps" %}
+{% set pageUrl = "/guide/steps" %}
+
+{% block guideContent %}
+<h1 class="govuk-heading-xl">Steps</h1>
+
+<p class="govuk-body-l">Each screen in a journey is a step. A step is one line in the journey’s <code>steps</code> list.</p>
+
+<div class="ufg-example">
+  <p class="ufg-example__label">Example <span>One step</span></p>
+  <div class="ufg-example__preview">
+    <section class="uf-journey">
+      <ol class="uf-steps">
+        {{ ufStep({ "type": "radio", "title": "Who owns the land", "live": "/eligibility", "prototype": "/example/eligibility", "note": "Asks who owns or manages the land" }, 2) }}
+      </ol>
+    </section>
+  </div>
+  <pre class="ufg-example__code">{ "type": "radio", "title": "Who owns the land", "live": "/eligibility", "prototype": "eligibility", "note": "Asks who owns or manages the land" },</pre>
+</div>
+
+<table class="govuk-table">
+  <caption class="govuk-table__caption govuk-table__caption--m">What each part of a step does</caption>
+  <thead class="govuk-table__head">
+    <tr class="govuk-table__row">
+      <th scope="col" class="govuk-table__header">Field</th>
+      <th scope="col" class="govuk-table__header">What it does</th>
+      <th scope="col" class="govuk-table__header">Needed?</th>
+    </tr>
+  </thead>
+  <tbody class="govuk-table__body">
+    <tr class="govuk-table__row">
+      <td class="govuk-table__cell"><code>type</code></td>
+      <td class="govuk-table__cell">Which wireframe to show – see <a class="govuk-link" href="/guide/screen-types">screen types</a></td>
+      <td class="govuk-table__cell">Yes</td>
+    </tr>
+    <tr class="govuk-table__row">
+      <td class="govuk-table__cell"><code>title</code></td>
+      <td class="govuk-table__cell">The label above the screen</td>
+      <td class="govuk-table__cell">Yes</td>
+    </tr>
+    <tr class="govuk-table__row">
+      <td class="govuk-table__cell"><code>live</code></td>
+      <td class="govuk-table__cell">The page’s address on the live service, shown as plain text</td>
+      <td class="govuk-table__cell">No</td>
+    </tr>
+    <tr class="govuk-table__row">
+      <td class="govuk-table__cell"><code>prototype</code></td>
+      <td class="govuk-table__cell">The page in this prototype – shown as a link, and the title links to it too. See <a class="govuk-link" href="/guide/links">linking to prototype pages</a>.</td>
+      <td class="govuk-table__cell">No</td>
+    </tr>
+    <tr class="govuk-table__row">
+      <td class="govuk-table__cell"><code>note</code></td>
+      <td class="govuk-table__cell">A short note shown under the screen</td>
+      <td class="govuk-table__cell">No</td>
+    </tr>
+  </tbody>
+</table>
+
+<p class="govuk-body">If you do not need a field, leave it out or leave it empty, like <code>"prototype": ""</code>. It will not be shown.</p>
+
+<h2 class="govuk-heading-l">Adding a step</h2>
+
+<ol class="govuk-list govuk-list--number">
+  <li>Find the journey in the <code>journeys</code> list.</li>
+  <li>Copy the line of a step near where the new one goes.</li>
+  <li>Paste it in the right place – steps are shown in the order they are in the list.</li>
+  <li>Change the <code>type</code>, <code>title</code> and any other fields.</li>
+</ol>
+
+<p class="govuk-body">Step numbers are added for you, so you do not need to renumber anything.</p>
+
+<h2 class="govuk-heading-l">Removing or moving a step</h2>
+
+<p class="govuk-body">Delete the line, or cut it and paste it somewhere else in the list.</p>
+
+<div class="govuk-warning-text">
+  <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+  <strong class="govuk-warning-text__text">
+    <span class="govuk-visually-hidden">Warning</span>
+    Every step needs a comma at the end except the last one. If you remove or move the last step, check the commas.
+  </strong>
+</div>
+
+<h2 class="govuk-heading-l">Writing notes</h2>
+
+<p class="govuk-body">Keep notes short – one sentence is best. Use them for things the wireframe cannot show, such as:</p>
+<ul class="govuk-list govuk-list--bullet">
+  <li>what the user does on the page, like “User chooses how to add the planting area”</li>
+  <li>that the screen is a modal, not a separate page</li>
+  <li>a link to an optional page, like “User can optionally read the grant rules, see pages outside the main flow”</li>
+</ul>
+{% endblock %}

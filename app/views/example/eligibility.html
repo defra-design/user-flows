@@ -1,0 +1,24 @@
+{% extends "layouts/example.html" %}
+
+{% set pageName = "Who owns the land?" %}
+{% set backLink = "/example/start" %}
+
+{% block content %}
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <form action="/example/eligibility-answer" method="post" novalidate>
+      {{ govukRadios({
+        name: "landOwner",
+        fieldset: { legend: { text: "Who owns or manages the land?", isPageHeading: true, classes: "govuk-fieldset__legend--l" } },
+        items: [
+          { value: "me", text: "I own the land" },
+          { value: "tenant", text: "I manage the land as a tenant" },
+          { value: "someone-else", text: "Someone else" }
+        ],
+        value: data.landOwner
+      }) }}
+      {{ govukButton({ text: "Continue" }) }}
+    </form>
+  </div>
+</div>
+{% endblock %}

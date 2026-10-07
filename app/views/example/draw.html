@@ -1,0 +1,23 @@
+{% extends "layouts/example.html" %}
+
+{% set pageName = "Draw the area" %}
+{% set backLink = "/example/map" %}
+
+{% block content %}
+<h1 class="govuk-heading-l">Draw the area</h1>
+<p class="govuk-body">Click on the map to add each corner of the area. Click the first point again to finish.</p>
+<div class="app-example-map" role="img" aria-label="Map placeholder">
+  <p class="govuk-body govuk-!-margin-0">Drawing on the map goes here in the real service</p>
+</div>
+<style>
+  .app-example-map { display: flex; align-items: center; justify-content: center; min-height: 360px; margin-bottom: 30px;
+    background: repeating-linear-gradient(45deg, #e3ecd9 0 20px, #d7e6c6 20px 40px); border: 1px solid #b1b4b6; text-align: center; padding: 20px; }
+</style>
+<form action="/example/tree-types" method="post" novalidate>
+  <input type="hidden" name="plantingArea" value="drawn">
+  <div class="govuk-button-group">
+    {{ govukButton({ text: "Finish" }) }}
+    <a class="govuk-link" href="/example/map">Cancel</a>
+  </div>
+</form>
+{% endblock %}

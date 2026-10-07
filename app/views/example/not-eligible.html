@@ -1,0 +1,15 @@
+{% extends "layouts/example.html" %}
+
+{% set pageName = "You cannot apply" %}
+{% set backLink = "/example/eligibility" %}
+
+{% block content %}
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <h1 class="govuk-heading-l">You cannot apply for this grant</h1>
+    <p class="govuk-body">Only the person who owns or manages the land can apply.</p>
+    <p class="govuk-body">Ask the landowner to apply instead.</p>
+    <p class="govuk-body"><a class="govuk-link" href="/example/grant-rules">Read the grant rules</a></p>
+  </div>
+</div>
+{% endblock %}

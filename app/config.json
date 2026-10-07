@@ -1,5 +1,5 @@
 {
-  "serviceName": "Service name goes here",
+  "serviceName": "User flows",
   "useServiceNavigation": true,
   "plugins": {
     "govuk-frontend": {
